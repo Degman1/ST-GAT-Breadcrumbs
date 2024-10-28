@@ -1,5 +1,5 @@
 # GATMobilityAnalysis
-Applying GAT to understand human mobility patterns and anomalies
+Applying GAT and LSTM to understand human mobility patterns and anomalies
 
 ## Environment Setup
 
