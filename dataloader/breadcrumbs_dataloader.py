@@ -16,7 +16,6 @@ class BreadcrumbsDataset(DGLDataset):
         root="",
         force_reload=False,
         verbose=False,
-        fully_connected=False,
     ):
         self.config = config
         self.W = W
@@ -25,7 +24,6 @@ class BreadcrumbsDataset(DGLDataset):
         self.n_edges = None
         self.mean = None
         self.std_dev = None
-        self.fully_connected = fully_connected
         super().__init__(
             name="breadcrumbs_dataset",
             raw_dir=root,
@@ -39,23 +37,22 @@ class BreadcrumbsDataset(DGLDataset):
         self.std_dev = np.std(data)
         data = z_score(data, self.mean, self.std_dev)
 
-        _, self.n_nodes = data.shape
+        self.n_times, self.n_nodes = data.shape
 
-        # TODO Change the following graph composer from the traffic dataset to work with the breadcrumbs dataset
+        self.n_edges = self.n_nodes ** 2    # Will always be using the fully connected graph
+        edge_index = torch.zeros((2, self.n_edges), dtype=torch.long)
+        edge_attr = torch.zeros((self.n_edges, 1))
+
         # n_window = self.config["N_PRED"] + self.config["N_HIST"]
 
-        # edge_index = torch.zeros((2, self.n_nodes**2), dtype=torch.long)
-        # edge_attr = torch.zeros((self.n_nodes**2, 1))
-        # self.n_edges = 0
-        # for i in range(self.n_nodes):
-        #     for j in range(self.n_nodes):
-        #         if self.fully_connected or self.W[i, j] != 0.0:
-        #             edge_index[0, self.n_edges] = i
-        #             edge_index[1, self.n_edges] = j
-        #             edge_attr[self.n_edges] = self.W[i, j]
-        #             self.n_edges += 1
-        # edge_index = edge_index[:, : self.n_edges]
-        # edge_attr = edge_attr[: self.n_edges]
+        for i in range(self.n_nodes):
+            for j in range(self.n_nodes):
+                edge_index[0, self.n_edges] = i
+                edge_index[1, self.n_edges] = j
+                edge_attr[self.n_edges] = self.W[i, j]
+                self.n_edges += 1
+        edge_index = edge_index[:, : self.n_edges]
+        edge_attr = edge_attr[: self.n_edges]
 
         # self.graphs = []
         # for i in range(self.config["N_DAYS"]):
