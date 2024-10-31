@@ -4,11 +4,10 @@ import numpy as np
 import pandas as pd
 import os
 from dgl.data import DGLDataset
-from shutil import copyfile
-import networkx as nx
-import matplotlib.pyplot as plt
+from splits import get_splits
 
 from utils.math import z_score
+
 
 def distance_to_weight(W, sigma2=0.1, epsilon=0.5, gat_version=False):
     n = W.shape[0]
@@ -120,7 +119,7 @@ class TrafficDataset(DGLDataset):
 
     @property
     def processed_file_names(self):
-        return ["data.pt"]
+        return ["traffic_data.pt"]
 
     @property
     def processed_paths(self):
@@ -133,28 +132,9 @@ class TrafficDataset(DGLDataset):
         return len(self.graphs)
 
 
-def get_splits(dataset: TrafficDataset, n_slot, splits):
-    """
-    Given the data, split it into random subsets of train, val, and test as given by splits
-    :param dataset: TrafficDataset object to split
-    :param n_slot: Number of possible sliding windows in a day
-    :param splits: (train, val, test) ratios
-    """
-    split_train, split_val, _ = splits
-    i = n_slot * split_train
-    j = n_slot * split_val
-    train = dataset[:i]
-    val = dataset[i : i + j]
-    test = dataset[i + j :]
-
-    return train, val, test
-
-
 def get_processed_dataset(config):
     # Number of possible windows in a day
-    config["N_SLOT"] = (
-        config["N_DAY_SLOT"] - (config["N_PRED"] + config["N_HIST"]) + 1
-    )
+    config["N_SLOT"] = config["N_DAY_SLOT"] - (config["N_PRED"] + config["N_HIST"]) + 1
 
     # Load the weight and dataset
     distances = pd.read_csv("./dataset/PeMSD7_W_228.csv", header=None).values
@@ -168,3 +148,5 @@ def get_processed_dataset(config):
 
     # total of 44 days in the dataset, use 34 for training, 5 for val, 5 for test
     d_train, d_val, d_test = get_splits(dataset, config["N_SLOT"], (34, 5, 5))
+
+    return dataset, d_mean, d_std_dev, d_train, d_val, d_test

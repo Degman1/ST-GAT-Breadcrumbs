@@ -25,7 +25,13 @@ def setup_directories():
 
 @torch.no_grad()
 def eval(
-    model, device, dataloader, config, type="", current_epoch=None, epochs_for_saving_attn=None
+    model,
+    device,
+    dataloader,
+    config,
+    type="",
+    current_epoch=None,
+    epochs_for_saving_attn=None,
 ):
     """
     Evaluation function to evaluate model on data
@@ -61,8 +67,8 @@ def eval(
             if i == 0:
                 y_pred = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
                 y_truth = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
-            truth = un_z_score(truth, config['D_MEAN'], config['D_STD_DEV'])
-            pred = un_z_score(pred, config['D_MEAN'], config['D_STD_DEV'])
+            truth = un_z_score(truth, config["D_MEAN"], config["D_STD_DEV"])
+            pred = un_z_score(pred, config["D_MEAN"], config["D_STD_DEV"])
             y_pred[i, : pred.shape[0], :] = pred
             y_truth[i, : pred.shape[0], :] = truth
             rmse += RMSE(truth, pred)
@@ -149,7 +155,13 @@ def model_train(
         print(f"Loss: {loss:.3f}")
         if epoch % 5 == 0 or epoch == config["EPOCHS"] - 1:
             train_mae, train_rmse, train_mape, _, _, attn_matrices_by_batch = eval(
-                model, device, train_dataloader, config, "Train", epoch, epochs_for_saving_attn
+                model,
+                device,
+                train_dataloader,
+                config,
+                "Train",
+                epoch,
+                epochs_for_saving_attn,
             )
             val_mae, val_rmse, val_mape, _, _, _ = eval(
                 model, device, val_dataloader, config, "Valid"

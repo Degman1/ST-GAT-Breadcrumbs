@@ -67,6 +67,7 @@ def build_attention_matrices(dataset, attn_matrices_by_batch_by_epoch, config, e
 
     return attention_matrices
 
+
 def plot_heatmap(attn_matrix, epoch_number, time_slot):
     """
     Plot a heatmap of the attention matrix.
