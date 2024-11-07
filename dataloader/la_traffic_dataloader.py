@@ -140,13 +140,13 @@ def get_processed_dataset(config):
     distances = pd.read_csv("./dataset/PeMSD7_W_228.csv", header=None).values
     W = distance_to_weight(distances, gat_version=config["USE_GAT_WEIGHTS"])
     dataset = TrafficDataset(
-        config, W, root="../dataset", fully_connected=config["FULLY_CONNECTED"]
+        config, W, root="./dataset", force_reload=False, fully_connected=config["FULLY_CONNECTED"]
     )
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev
 
     # total of 44 days in the dataset, use 34 for training, 5 for val, 5 for test
-    d_train, d_val, d_test = splits.get_splits(dataset, config["N_SLOT"], (34, 5, 5))
+    d_train, d_val, d_test = splits.get_splits_window(dataset, config["N_SLOT"], (34, 5, 5))
 
     return dataset, d_mean, d_std_dev, d_train, d_val, d_test

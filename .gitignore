@@ -166,4 +166,5 @@ runs/
 trained_models/
 dataset/*.pt
 dataset/*.csv
+dataset/*.adjlist
 visualizations/*.png

@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import os
 from dgl.data import DGLDataset
+import networkx as nx
 
 from utils.math import z_score
 from . import splits
@@ -31,31 +32,26 @@ class BreadcrumbsDataset(DGLDataset):
         )
 
     def process(self):
-        data = pd.read_csv(self.raw_file_names[0], header=None).values
+        data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0).values
+
         self.mean = np.mean(data)
         self.std_dev = np.std(data)
         data = z_score(data, self.mean, self.std_dev)
 
         self.n_times, self.n_nodes = data.shape
 
-        # TODO read in adjacency matrix
-        adj_mtx = pd.read_csv("...").values
+        G = nx.read_adjlist(self.raw_file_names[1])
+        adj_mtx = nx.to_numpy_array(G)
 
         # Get the indices of non-zero elements (edges)
         src, dst = np.nonzero(adj_mtx)
 
         # Initialize edge index arrays based on non-zero elements
-        num_edges = len(src)
-        self.n_edges = self.n_nodes ** 2    # Will always be using the fully connected graph
-        edge_index = torch.zeros((2, self.n_edges), dtype=torch.long)
+        self.n_edges = len(src)
+        edge_index = torch.tensor(np.array([src, dst]), dtype=torch.long)
+        
         # Optionally if want to add edge attributes
-        edge_attr = torch.zeros((self.n_edges, 1))
-
-        # Populate edge indices
-        edge_index[0, :] = src
-        edge_index[1, :] = dst
-
-        # Optionally add edge weights if needed
+        # edge_attr = torch.zeros((self.n_edges, 1))
         # for i in range(num_edges):
         #     edge_attr[i] = adj_mtx[src[i], dst[i]]
 
@@ -63,16 +59,17 @@ class BreadcrumbsDataset(DGLDataset):
         self.n_hist = self.config["N_HIST"]
 
         # Iterate through each time window to create graphs
-        n_timepoints = self.data.shape[0]
+        n_timepoints = data.shape[0]
         for t in range(self.n_hist, n_timepoints - self.n_pred):
             # Create a new graph based on the adjacency matrix structure
-            g = dgl.graph((self.edge_index[0], self.edge_index[1]), num_nodes=self.n_nodes)
+            g = dgl.graph((edge_index[0], edge_index[1]), num_nodes=self.n_nodes)
+            g = dgl.add_self_loop(g)
 
             # Set edge weights if needed (optional)
             # g.edata["weight"] = torch.FloatTensor(edge_attr)
 
             # Create a full window of data: history + prediction
-            full_window = self.data[t - self.n_hist:t + self.n_pred, :]  # Shape: (n_hist + n_pred, n_nodes)
+            full_window = data[t - self.n_hist:t + self.n_pred, :]  # Shape: (n_hist + n_pred, n_nodes)
             full_window = np.swapaxes(full_window, 0, 1)  # Shape: (n_nodes, n_hist + n_pred)
 
             # Node features: last `n_hist` time samples (history)
@@ -111,7 +108,7 @@ class BreadcrumbsDataset(DGLDataset):
 
     @property
     def raw_file_names(self):
-        return [os.path.join(self.raw_dir, "dataset/timeseriesByPOI.csv")]
+        return [os.path.join(self.raw_dir, "timeseriesByPOI.csv"), os.path.join(self.raw_dir, "G3Hops.adjlist")]
 
     @property
     def processed_file_names(self):
@@ -132,14 +129,13 @@ def get_processed_dataset(config):
     # Number of possible windows in a day
     
     dataset = BreadcrumbsDataset(
-        config, root="../dataset"
+        config, root="./dataset", force_reload=True
     )
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev
 
-    # total of 44 days in the dataset, use 34 for training, 5 for val, 5 for test
-    # TODO
-    # d_train, d_val, d_test = splits.get_splits(dataset, config["N_SLOT"], (34, 5, 5))
+    ratios = (0.7, 0.1, 0.2)
+    d_train, d_val, d_test = splits.get_splits(dataset, (0.7, 0.1, 0.2))
 
     return dataset, d_mean, d_std_dev, d_train, d_val, d_test
