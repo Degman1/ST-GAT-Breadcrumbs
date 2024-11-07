@@ -13,14 +13,16 @@ from torch.utils.tensorboard import SummaryWriter
 writer = SummaryWriter()
 
 
-def setup_directories():
-    dir = "./trained_models"
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+def setup_directories(name):
+    model_dir = f"./trained_models/{name}"
+    if not os.path.exists(model_dir):
+        os.makedirs(model_dir)
 
-    dir = "./trained_model/attention"
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    runs_dir = f"./runs/{name}"
+    if not os.path.exists(runs_dir):
+        os.makedirs(runs_dir)
+
+    return model_dir, runs_dir
 
 
 @torch.no_grad()
