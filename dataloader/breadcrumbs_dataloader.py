@@ -12,11 +12,7 @@ from . import splits
 
 class BreadcrumbsDataset(DGLDataset):
     def __init__(
-        self,
-        config,
-        root="",
-        force_reload=False,
-        verbose=False,
+        self, config, root="", force_reload=False, verbose=False,
     ):
         self.config = config
         self.graphs = []
@@ -49,7 +45,7 @@ class BreadcrumbsDataset(DGLDataset):
         # Initialize edge index arrays based on non-zero elements
         self.n_edges = len(src)
         edge_index = torch.tensor(np.array([src, dst]), dtype=torch.long)
-        
+
         # Optionally if want to add edge attributes
         # edge_attr = torch.zeros((self.n_edges, 1))
         # for i in range(num_edges):
@@ -63,20 +59,25 @@ class BreadcrumbsDataset(DGLDataset):
         for t in range(self.n_hist, n_timepoints - self.n_pred):
             # Create a new graph based on the adjacency matrix structure
             g = dgl.graph((edge_index[0], edge_index[1]), num_nodes=self.n_nodes)
-            g = dgl.add_self_loop(g)
+            # Self loops are now added in 
+            # g = dgl.add_self_loop(g)
 
             # Set edge weights if needed (optional)
             # g.edata["weight"] = torch.FloatTensor(edge_attr)
 
             # Create a full window of data: history + prediction
-            full_window = data[t - self.n_hist:t + self.n_pred, :]  # Shape: (n_hist + n_pred, n_nodes)
-            full_window = np.swapaxes(full_window, 0, 1)  # Shape: (n_nodes, n_hist + n_pred)
+            full_window = data[
+                t - self.n_hist : t + self.n_pred, :
+            ]  # Shape: (n_hist + n_pred, n_nodes)
+            full_window = np.swapaxes(
+                full_window, 0, 1
+            )  # Shape: (n_nodes, n_hist + n_pred)
 
             # Node features: last `n_hist` time samples (history)
-            g.ndata["feat"] = torch.FloatTensor(full_window[:, :self.n_hist])
+            g.ndata["feat"] = torch.FloatTensor(full_window[:, : self.n_hist])
 
             # Node labels: next `n_pred` time samples (prediction)
-            g.ndata["label"] = torch.FloatTensor(full_window[:, self.n_hist:])
+            g.ndata["label"] = torch.FloatTensor(full_window[:, self.n_hist :])
 
             # Append graph to the list
             self.graphs.append(g)
@@ -108,7 +109,10 @@ class BreadcrumbsDataset(DGLDataset):
 
     @property
     def raw_file_names(self):
-        return [os.path.join(self.raw_dir, "timeseriesByPOI.csv"), os.path.join(self.raw_dir, "G3Hops.adjlist")]
+        return [
+            os.path.join(self.raw_dir, "timeseriesByPOI_1hour.csv"),
+            os.path.join(self.raw_dir, "G3Hops_full.adjlist"),
+        ]
 
     @property
     def processed_file_names(self):
@@ -123,14 +127,12 @@ class BreadcrumbsDataset(DGLDataset):
 
     def __len__(self):
         return len(self.graphs)
-    
+
 
 def get_processed_dataset(config):
     # Number of possible windows in a day
-    
-    dataset = BreadcrumbsDataset(
-        config, root="./dataset", force_reload=True
-    )
+
+    dataset = BreadcrumbsDataset(config, root="./dataset", force_reload=True)
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev

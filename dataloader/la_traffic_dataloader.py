@@ -56,8 +56,8 @@ class TrafficDataset(DGLDataset):
         _, self.n_nodes = data.shape
         n_window = self.config["N_PRED"] + self.config["N_HIST"]
 
-        edge_index = torch.zeros((2, self.n_nodes**2), dtype=torch.long)
-        edge_attr = torch.zeros((self.n_nodes**2, 1))
+        edge_index = torch.zeros((2, self.n_nodes ** 2), dtype=torch.long)
+        edge_attr = torch.zeros((self.n_nodes ** 2, 1))
         self.n_edges = 0
         for i in range(self.n_nodes):
             for j in range(self.n_nodes):
@@ -140,13 +140,19 @@ def get_processed_dataset(config):
     distances = pd.read_csv("./dataset/PeMSD7_W_228.csv", header=None).values
     W = distance_to_weight(distances, gat_version=config["USE_GAT_WEIGHTS"])
     dataset = TrafficDataset(
-        config, W, root="./dataset", force_reload=False, fully_connected=config["FULLY_CONNECTED"]
+        config,
+        W,
+        root="./dataset",
+        force_reload=False,
+        fully_connected=config["FULLY_CONNECTED"],
     )
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev
 
     # total of 44 days in the dataset, use 34 for training, 5 for val, 5 for test
-    d_train, d_val, d_test = splits.get_splits_window(dataset, config["N_SLOT"], (34, 5, 5))
+    d_train, d_val, d_test = splits.get_splits_window(
+        dataset, config["N_SLOT"], (34, 5, 5)
+    )
 
     return dataset, d_mean, d_std_dev, d_train, d_val, d_test

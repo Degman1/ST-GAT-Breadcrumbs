@@ -17,6 +17,7 @@ def get_splits_window(dataset: DGLDataset, n_slot, splits):
 
     return train, val, test
 
+
 def get_splits(dataset: DGLDataset, ratios):
     """
     Given the data, split it into train, val, and test subsets.
@@ -31,7 +32,7 @@ def get_splits(dataset: DGLDataset, ratios):
 
     # Split without shuffling to maintain order
     train_set = dataset[:num_train]
-    val_set = dataset[num_train:num_train + num_val]
-    test_set = dataset[num_train + num_val:]
+    val_set = dataset[num_train : num_train + num_val]
+    test_set = dataset[num_train + num_val :]
 
     return train_set, val_set, test_set

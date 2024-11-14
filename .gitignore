@@ -168,3 +168,4 @@ dataset/*.pt
 dataset/*.csv
 dataset/*.adjlist
 visualizations/*.png
+*.out
