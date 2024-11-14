@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p gpu  # Partition
 #SBATCH -G 1  # Number of GPUs
-#SBATCH -t 10:00:00  # Job time limit
+#SBATCH -t 02:00:00  # Job time limit
 #SBATCH --constraint=vram40
 #SBATCH -o slurm-%j.out  # %j = job ID
 #SBATCH --mail-type=BEGIN
