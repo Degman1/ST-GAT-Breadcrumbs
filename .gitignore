@@ -169,3 +169,4 @@ dataset/*.csv
 dataset/*.adjlist
 visualizations/*.png
 *.out
+attn_values/

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from models.st_gat import ST_GAT
 from utils.math import *
 from torch.utils.tensorboard import SummaryWriter
+from models.persist import save_attention_avg_compressed
 
 # Make a tensorboard writer
 writer = SummaryWriter()
@@ -31,7 +32,7 @@ def eval(
     device,
     dataloader,
     config,
-    type="",
+    eval_type="",
     current_epoch=None,
     epochs_for_saving_attn=None,
 ):
@@ -40,7 +41,7 @@ def eval(
     :param model Model to evaluate
     :param device Device to evaluate on
     :param dataloader Data loader
-    :param type Name of evaluation type, e.g. Train/Val/Test
+    :param eval_type Name of evaluation type, e.g. Train/Val/Test
     :param current_epoch If type 'Train', pass the epoch number of which the evaluation is occurring
     :param epochs_for_saving_attn If type 'Train', pass the epochs at which you would like to save the attention values
     """
@@ -53,49 +54,68 @@ def eval(
     n = 0
 
     # Maps a batch to the corresponding attn matrices
-    all_attn_matrices = []
-
-    print_saving_attn = True
+    # Saving to disk instead of memory
+    all_attn_matrices = None
+    
+    pbar = None
 
     # Evaluate model on all data
     for i, batch in enumerate(dataloader):
         batch = batch.to(device)
+        
         if batch.ndata["feat"].shape[0] == 1:
             pass
-        else:
-            with torch.no_grad():
-                pred, attn = model(batch, device)
-            truth = batch.ndata["label"].view(pred.shape)
+        
+        with torch.no_grad():
+            pred, attn = model(batch, device)
+            
+        truth = batch.ndata["label"].view(pred.shape)
+        
+        if i == 0:
+            y_pred = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
+            y_truth = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
+        
+        if config["D_MEAN"] is not None and config["D_STD_DEV"] is not None:
+            y_truth = un_z_score(truth, config["D_MEAN"], config["D_STD_DEV"])
+            y_pred = un_z_score(pred, config["D_MEAN"], config["D_STD_DEV"])
+        
+        y_pred[i, : pred.shape[0], :] = pred
+        y_truth[i, : pred.shape[0], :] = truth
+        
+        rmse += RMSE(truth, pred)
+        mae += MAE(truth, pred)
+        mape += MAPE(truth, pred)
+        n += 1
+        
+        # Save the batch-attn matrix pair for visualization
+        if (
+            eval_type == "Train"
+            and current_epoch is not None
+            and epochs_for_saving_attn is not None
+            and current_epoch in epochs_for_saving_attn
+        ):
+            # Save individual graph attention matrices
             if i == 0:
-                y_pred = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
-                y_truth = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
-            truth = un_z_score(truth, config["D_MEAN"], config["D_STD_DEV"])
-            pred = un_z_score(pred, config["D_MEAN"], config["D_STD_DEV"])
-            y_pred[i, : pred.shape[0], :] = pred
-            y_truth[i, : pred.shape[0], :] = truth
-            rmse += RMSE(truth, pred)
-            mae += MAE(truth, pred)
-            mape += MAPE(truth, pred)
-            n += 1
-            # Save the batch-attn matrix pair for visualization
-            if (
-                type == "Train"
-                and current_epoch is not None
-                and epochs_for_saving_attn is not None
-                and current_epoch in epochs_for_saving_attn
-            ):
-                if print_saving_attn:
-                    print(
-                        f"Saving attention matrices after epoch {current_epoch} for post-training analysis."
-                    )
-                    print_saving_attn = False
-                all_attn_matrices.append(
-                    {"batch": batch.cpu(), "attn": attn.squeeze(2).cpu()}
-                )
+                pbar = tqdm(total=len(dataloader), desc=f"Saving Epoch {current_epoch} Attention")
+            # src, dst = batch.edges()
+            # num_graphs = batch.batch_size  # Number of graphs in the batch
+            # print(f"Batch Stats: {len(src)} edges, {batch.num_nodes()} nodes, {num_graphs} graphs.")
+            save_attention_avg_compressed(attn, i, current_epoch)
+            pbar.update(1)
+    
+    # Close the progress bar if it was used
+    if (
+        eval_type == "Train"
+        and current_epoch is not None
+        and epochs_for_saving_attn is not None
+        and current_epoch in epochs_for_saving_attn
+        and pbar is not None
+    ):
+        pbar.close()
 
     rmse, mae, mape = rmse / n, mae / n, mape / n
 
-    print(f"{type}, MAE: {mae}, RMSE: {rmse}, MAPE: {mape}")
+    print(f"{eval_type}, MAE: {mae}, RMSE: {rmse}, MAPE: {mape}")
 
     # get the average score for each metric in each batch
     return rmse, mae, mape, y_pred, y_truth, all_attn_matrices
@@ -172,8 +192,8 @@ def model_train(
             # Clear GPU memory cache after each evaluation
             torch.cuda.empty_cache()
 
-            if attn_matrices_by_batch is not None and len(attn_matrices_by_batch) > 0:
-                attn_matrices_by_batch_by_epoch[epoch] = attn_matrices_by_batch
+            # if attn_matrices_by_batch is not None and len(attn_matrices_by_batch) > 0:
+            #     attn_matrices_by_batch_by_epoch[epoch] = attn_matrices_by_batch
             writer.add_scalar(f"MAE/train", train_mae, epoch)
             writer.add_scalar(f"RMSE/train", train_rmse, epoch)
             writer.add_scalar(f"MAPE/train", train_mape, epoch)
@@ -203,4 +223,4 @@ def model_test(model, test_dataloader, device, config):
     :param test_dataloader Data loader of test dataset
     :param device Device to evaluate on
     """
-    _, _, _, y_pred, y_truth, _ = eval(model, device, test_dataloader, config, "Test")
+    return eval(model, device, test_dataloader, config, "Test")

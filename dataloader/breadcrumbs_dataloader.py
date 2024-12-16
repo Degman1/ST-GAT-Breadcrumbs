@@ -30,14 +30,26 @@ class BreadcrumbsDataset(DGLDataset):
     def process(self):
         data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0).values
 
-        self.mean = np.mean(data)
-        self.std_dev = np.std(data)
-        data = z_score(data, self.mean, self.std_dev)
+        # Leaving out normalization because most values in the dataset are 0 or 1
+        # self.mean = np.mean(data)
+        # self.std_dev = np.std(data)
+        # data = z_score(data, self.mean, self.std_dev)
+        self.mean = None        # Setting it to None ensure the un_zscore function is not called when evaluating
+        self.std_dev = None
 
         self.n_times, self.n_nodes = data.shape
 
         G = nx.read_adjlist(self.raw_file_names[1])
-        adj_mtx = nx.to_numpy_array(G)
+        node_ids = sorted(G.nodes(), key=int)
+        int_node_ids = [int(i) for i in node_ids]
+        
+        # Assert that the number of node IDs matches the number of nodes in the adjacency matrix
+        assert len(int_node_ids) == self.n_nodes, (
+            f"Mismatch between the number of node IDs ({len(int_node_ids)}) "
+            f"and the number of nodes ({self.n_nodes}) in the dataset."
+        )
+        
+        adj_mtx = nx.to_numpy_array(G, nodelist=node_ids)
 
         # Get the indices of non-zero elements (edges)
         src, dst = np.nonzero(adj_mtx)
@@ -46,7 +58,7 @@ class BreadcrumbsDataset(DGLDataset):
         self.n_edges = len(src)
         edge_index = torch.tensor(np.array([src, dst]), dtype=torch.long)
 
-        # Optionally if want to add edge attributes
+        # TODO Optionally if want to add edge attributes
         # edge_attr = torch.zeros((self.n_edges, 1))
         # for i in range(num_edges):
         #     edge_attr[i] = adj_mtx[src[i], dst[i]]
@@ -62,7 +74,7 @@ class BreadcrumbsDataset(DGLDataset):
             # Self loops are now added in 
             # g = dgl.add_self_loop(g)
 
-            # Set edge weights if needed (optional)
+            # Set edge weights (optional)
             # g.edata["weight"] = torch.FloatTensor(edge_attr)
 
             # Create a full window of data: history + prediction
@@ -78,11 +90,15 @@ class BreadcrumbsDataset(DGLDataset):
 
             # Node labels: next `n_pred` time samples (prediction)
             g.ndata["label"] = torch.FloatTensor(full_window[:, self.n_hist :])
+            
+            # Tag the nodes with the original POI ids
+            g.ndata["id"] = torch.IntTensor(int_node_ids)
 
             # Append graph to the list
             self.graphs.append(g)
-
-        print("Completed Data Preprocessing")
+            
+        print(f"Generated {len(self.graphs)} different graphs from the timeseries data each " \
+            f"with the same {self.graphs[0].number_of_nodes()} nodes and {self.graphs[0].number_of_edges()} edges.")
 
     def save(self):
         # Save processed dataset
