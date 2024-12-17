@@ -168,5 +168,6 @@ dataset/*.pt
 dataset/*.csv
 dataset/*.adjlist
 visualizations/*.png
+visualizations/*.csv
 *.out
 attn_values/
