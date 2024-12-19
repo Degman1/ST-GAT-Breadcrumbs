@@ -12,7 +12,7 @@ def plot_adjacency_matrix(matrix, filename="adjacency_matrix.png"):
   """
 
   plt.figure(figsize=(8, 6))
-  plt.imshow(matrix, cmap='gray', interpolation='nearest')
+  plt.imshow(matrix, cmap='binary', interpolation='nearest')
   plt.title("Adjacency Matrix")
 
   # Determine appropriate tick spacing based on matrix size
@@ -26,6 +26,6 @@ def plot_adjacency_matrix(matrix, filename="adjacency_matrix.png"):
   plt.close()
     
 if __name__ == "__main__":
-    G = nx.read_adjlist("../dataset/G3Hops_full.adjlist")
+    G = nx.read_adjlist("../dataset/pruned_clustered_G3Hops.adjlist")
     adj_mtx = nx.to_numpy_array(G)
     plot_adjacency_matrix(adj_mtx)

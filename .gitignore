@@ -164,9 +164,7 @@ cython_debug/
 # Previously trained models
 runs/
 trained_models/
-dataset/*.pt
-dataset/*.csv
-dataset/*.adjlist
+dataset/*
 visualizations/*.png
 visualizations/*.csv
 *.out
