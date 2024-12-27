@@ -41,6 +41,10 @@ config = {
 
 dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config)
 print("Completed Data Preprocessing.")
+
+if config['D_MEAN'] is not None:
+    print("NOTE: Normalized time series data during preprocessing.")
+
 test_dataloader = GraphDataLoader(d_test, batch_size=config['BATCH_SIZE'], shuffle=False)
 
 model_path = f'{model_dir}/model.pth'
@@ -73,6 +77,8 @@ else:
     print(f"Number of graphs in training dataset: {num_train_graphs}")
     print(f"Number of graphs in validation dataset: {num_val_graphs}")
     print(f"Number of graphs in test dataset: {num_test_graphs}")
+    
+    print(f"Training model over {config["EPOCHS"]} epochs.")
 
     # Configure and train model
     model, attn_matrices_by_batch_by_epoch = models.trainer.model_train(train_dataloader, val_dataloader, config, device, epochs_for_saving_attn)
@@ -87,5 +93,7 @@ else:
 # Run inference on the test data
 _, _, _, y_pred, y_truth, _ = models.trainer.model_test(model, test_dataloader, device, config)
 
-# attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, 0, "attn_values")
-# visualizations.attention_matrix.plot_heatmap(attention[0], 0, 0, dataset.graphs[0].ndata["id"], 100)
+epoch = config['EPOCHS'] - 1
+attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")
+np.save("attention_matrix.npy", attention[0])
+visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)

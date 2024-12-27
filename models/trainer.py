@@ -76,8 +76,8 @@ def eval(
             y_truth = torch.zeros(len(dataloader), pred.shape[0], pred.shape[1])
         
         if config["D_MEAN"] is not None and config["D_STD_DEV"] is not None:
-            y_truth = un_z_score(truth, config["D_MEAN"], config["D_STD_DEV"])
-            y_pred = un_z_score(pred, config["D_MEAN"], config["D_STD_DEV"])
+            truth = un_z_score(truth, config["D_MEAN"], config["D_STD_DEV"])
+            pred = un_z_score(pred, config["D_MEAN"], config["D_STD_DEV"])
         
         y_pred[i, : pred.shape[0], :] = pred
         y_truth[i, : pred.shape[0], :] = truth

@@ -4,45 +4,6 @@ import torch
 from tqdm import tqdm
 import os
 import numpy as np
-from concurrent.futures import ThreadPoolExecutor
-
-
-def process_npz_file(npz_file, graph, dataset, npz_dir):
-    """
-    Process a single .npz file containing attention weights.
-    """
-    attn_weights = np.load(npz_file)["attn_avg"]  # Replace with the actual key
-    num_time_slots_in_batch = attn_weights.shape[0] // dataset.n_edges
-
-    attention_matrices = []
-    for time_slot in range(num_time_slots_in_batch):
-        start_idx = time_slot * dataset.n_edges
-        end_idx = start_idx + dataset.n_edges
-        sub_attn_weights = attn_weights[start_idx:end_idx, :]
-        
-        # Convert edge attention weights to node-to-node attention matrix
-        attn_matrix = edge_attention_to_matrix(graph, sub_attn_weights.mean(axis=1))  # Average across heads
-        attention_matrices.append(attn_matrix)
-    
-    return attention_matrices
-
-def build_attention_matrices_multithreaded(dataset, config, epoch, npz_dir):
-    graph = dataset.graphs[0]  # All graphs have the same structure
-
-    npz_files = sorted(os.listdir(npz_dir))  # Get sorted .npz files
-    npz_files = [os.path.join(npz_dir, f) for f in npz_files if f.endswith(".npz")]
-
-    attention_matrices = []
-    
-    with ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
-        futures = [executor.submit(process_npz_file, npz_file, graph, dataset, npz_dir) for npz_file in npz_files]
-        with tqdm(total=len(futures), desc="Processing .npz files") as pbar_files:
-            for future in futures:
-                attention_matrices.extend(future.result())
-                pbar_files.update(1)
-
-    return attention_matrices
-
 
 
 def edge_attention_to_matrix(graph, edge_attention):
@@ -55,6 +16,7 @@ def edge_attention_to_matrix(graph, edge_attention):
     """
     num_nodes = graph.num_nodes()
     adj_matrix = np.zeros((num_nodes, num_nodes))
+    print(num_nodes)
 
     # Extract the source and destination node indices for edges
     src, dst = graph.edges()
@@ -131,9 +93,10 @@ def plot_heatmap(attn_matrix, epoch_number, time_slot, custom_node_ids=None, dis
     :param custom_node_ids: Optional list of custom node IDs to display as axis labels.
     :param display_step: Step size to select custom node IDs for axis labels (default=50).
     """
+    attn_matrix_normalized = (attn_matrix - np.min(attn_matrix)) / (np.max(attn_matrix) - np.min(attn_matrix))
     plt.figure(figsize=(10, 8))
-    ax = sns.heatmap(attn_matrix, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8})
-    plt.title(f"Attention Heatmap (Time Slot {time_slot}, Epoch {epoch_number})")
+    ax = sns.heatmap(attn_matrix_normalized, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8})
+    plt.title(f"Attention Heatmap (Epoch {epoch_number})")
     
     if custom_node_ids is not None:
         # Ensure node IDs are integers
@@ -157,7 +120,7 @@ def plot_heatmap(attn_matrix, epoch_number, time_slot, custom_node_ids=None, dis
 
     plt.xlabel("Source Node")
     plt.ylabel("Destination Node")
-    name = f"visualizations/attention_heatmap_epoch{epoch_number}_slot{time_slot}.png"
+    name = f"visualizations/attention_heatmap_epoch{epoch_number}.png"
     plt.savefig(
         name, 
         bbox_inches="tight"
