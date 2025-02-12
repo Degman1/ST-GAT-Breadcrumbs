@@ -98,6 +98,26 @@ class ST_GAT(torch.nn.Module):
 
         # gat layer: output of gat: [11400, 12]
         x, attn = self.gat(graph, x)
+        
+        # # Alternative Method: Apply GAT for each individual time step
+        # # Reshape x to [batch_size, n_nodes, seq_length]
+        # batch_size = graph.batch_size if hasattr(graph, "batch_size") else 1
+        # x = x.view(batch_size, self.n_nodes, -1)
+        # seq_len = x.shape[2]  # Sequence length
+
+        # gat_outputs = []
+        # attn_matrices = []
+
+        # # Apply GAT layer to each time step separately
+        # for t in range(seq_len):
+        #     xt, attn = self.gat(graph, x[:, :, t])
+        #     gat_outputs.append(xt.unsqueeze(0))  # Maintain time dimension
+        #     attn_matrices.append(attn.unsqueeze(0))
+
+        # # Stack over time dimension
+        # x = torch.cat(gat_outputs, dim=0)  # Shape: [seq_length, batch_size, n_nodes]
+        # attn_matrices = torch.cat(attn_matrices, dim=0)  # Shape: [seq_length, batch_size, n_nodes, n_nodes]
+        
         x = F.dropout(x, self.dropout, training=self.training)
 
         # RNN: 2 LSTM
