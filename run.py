@@ -12,6 +12,7 @@ import models.st_gat
 import models.trainer
 import models.persist
 import visualizations.attention_matrix
+import visualizations.select_significant_pois
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using {device}")
@@ -23,7 +24,7 @@ torch.manual_seed(0)
 
 model_dir, runs_dir = models.trainer.setup_directories("Predicting_Breadcrumbs_Movement")
 
-RETRAIN = True
+RETRAIN = False
 SAVE_MODEL = True
 SAVE_ATTENTION = True
 
@@ -78,7 +79,7 @@ else:
     print(f"Number of graphs in validation dataset: {num_val_graphs}")
     print(f"Number of graphs in test dataset: {num_test_graphs}")
     
-    print(f"Training model over {config["EPOCHS"]} epochs.")
+    print(f"Training model over {config['EPOCHS']} epochs.")
 
     # Configure and train model
     model, attn_matrices_by_batch_by_epoch = models.trainer.model_train(train_dataloader, val_dataloader, config, device, epochs_for_saving_attn)
@@ -96,4 +97,6 @@ _, _, _, y_pred, y_truth, _ = models.trainer.model_test(model, test_dataloader, 
 epoch = config['EPOCHS'] - 1
 attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")
 np.save("attention_matrix.npy", attention[0])
-visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)
+normalized_attn = visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)
+significant_pois = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"])
+print(significant_pois)

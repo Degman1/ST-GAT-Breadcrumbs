@@ -10,7 +10,7 @@
 #SBATCH --mail-type=REQUEUE
 #SBATCH --mem=250g
 
+module load conda/latest
 nvidia-smi
-source /work/pi_hongkunz_umass_edu/miniconda3/etc/profile.d/conda.sh
-conda activate deep-learning
+conda activate /work/pi_hongkunz_umass_edu/dgerard/envs/deep-learning
 python run.py

@@ -16,7 +16,6 @@ def edge_attention_to_matrix(graph, edge_attention):
     """
     num_nodes = graph.num_nodes()
     adj_matrix = np.zeros((num_nodes, num_nodes))
-    print(num_nodes)
 
     # Extract the source and destination node indices for edges
     src, dst = graph.edges()
@@ -126,3 +125,4 @@ def plot_heatmap(attn_matrix, epoch_number, time_slot, custom_node_ids=None, dis
         bbox_inches="tight"
     )
     print(f"Attention heat map saved to {name}")
+    return attn_matrix_normalized
