@@ -24,13 +24,13 @@ torch.manual_seed(0)
 
 model_dir, runs_dir = models.trainer.setup_directories("Predicting_Breadcrumbs_Movement")
 
-RETRAIN = False
+RETRAIN = True
 SAVE_MODEL = True
 SAVE_ATTENTION = True
 
 config = {
     'BATCH_SIZE': 50,
-    'EPOCHS': 60,
+    'EPOCHS': 1,
     'WEIGHT_DECAY': 5e-5,
     'INITIAL_LR': 3e-4,
     'CHECKPOINT_DIR': runs_dir,
@@ -98,5 +98,8 @@ epoch = config['EPOCHS'] - 1
 attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")
 np.save("attention_matrix.npy", attention[0])
 normalized_attn = visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)
-significant_pois = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"])
+significant_pois, sorted_scores = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"])
+print(dataset.graphs[0].ndata["id"])
+print("\n*******\n")
 print(significant_pois)
+print(sorted_scores)
