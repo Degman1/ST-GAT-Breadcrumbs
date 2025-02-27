@@ -31,7 +31,7 @@ class ST_GAT(torch.nn.Module):
     """
 
     def __init__(
-        self, in_channels, out_channels, n_nodes, heads=NUM_HEADS, dropout=0.0, temporal_gat=True
+        self, in_channels, out_channels, n_nodes, heads=NUM_HEADS, dropout=0.0
     ):
         """
         Initialize the ST-GAT model
@@ -46,9 +46,7 @@ class ST_GAT(torch.nn.Module):
         self.heads = heads
         self.dropout = dropout
         self.n_nodes = n_nodes
-        self.temporal_gat = temporal_gat
 
-        self.n_preds = 9
         lstm1_hidden_size = 32
         lstm2_hidden_size = 128
 
@@ -91,24 +89,7 @@ class ST_GAT(torch.nn.Module):
         # Get node features and edge weights from the DGL graph
         x = graph.ndata["feat"].to(device)  # Node features
 
-        if (self.temporal_gat):
-            # Pass the entirety of all time steps through the GAT to learn spatio-temporal attention
-            # gat layer: output of gat: [11400, 12]
-            x, attn = self.gat(graph, x)
-        else:
-            # Pass each individual time step through a seperate GAT for fine-grained predictions
-            # at the cost of efficiency
-            # Reshape x to [batch_size, n_nodes, seq_length]
-            batch_size = graph.batch_size if hasattr(graph, "batch_size") else 1
-            x = x.view(batch_size, self.n_nodes, -1)
-            seq_len = x.shape[2]  # Sequence length
-
-            # Apply GAT layer to each time step separately
-            gat_outputs, attn_matrices = zip(*[self.gat(graph, x[:, :, t]) for t in range(seq_len)])
-
-            # Stack over time dimension
-            x = torch.cat(gat_outputs, dim=0)  # Shape: [seq_length, batch_size, n_nodes]
-            attn = torch.cat(attn_matrices, dim=0)  # Shape: [seq_length, n_edges, num_heads]
+        x, attn = self.gat(graph, x)
         
         x = F.dropout(x, self.dropout, training=self.training)
 

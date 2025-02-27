@@ -13,6 +13,7 @@ import models.trainer
 import models.persist
 import visualizations.attention_matrix
 import visualizations.select_significant_pois
+import visualizations.predictions
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using {device}")
@@ -30,7 +31,7 @@ SAVE_ATTENTION = True
 
 config = {
     'BATCH_SIZE': 50,
-    'EPOCHS': 1,
+    'EPOCHS': 150,
     'WEIGHT_DECAY': 5e-5,
     'INITIAL_LR': 3e-4,
     'CHECKPOINT_DIR': runs_dir,
@@ -38,6 +39,8 @@ config = {
     'N_HIST': 12,
     'DROPOUT': 0.2,
     'USE_GAT_WEIGHTS': True,
+    # number of measurements per day
+    'SLOTS_PER_DAY': 24,
 }
 
 dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config)
@@ -69,15 +72,9 @@ if os.path.exists(model_path) and os.path.exists(attn_path) and not RETRAIN:
 else:
     train_dataloader = GraphDataLoader(d_train, batch_size=config['BATCH_SIZE'], shuffle=True)
     val_dataloader = GraphDataLoader(d_val, batch_size=config['BATCH_SIZE'], shuffle=True)
-    
-    # Get the number of graphs directly from datasets
-    num_train_graphs = len(d_train)
-    num_val_graphs = len(d_val)
-    num_test_graphs = len(d_test)
 
-    print(f"Number of graphs in training dataset: {num_train_graphs}")
-    print(f"Number of graphs in validation dataset: {num_val_graphs}")
-    print(f"Number of graphs in test dataset: {num_test_graphs}")
+    print(f"Number of graphs in training dataset: {len(d_train)}")
+    print(f"Number of graphs in validation dataset: {len(d_val)}")
     
     print(f"Training model over {config['EPOCHS']} epochs.")
 
@@ -90,6 +87,8 @@ else:
     if SAVE_MODEL:
         # Save the trained model
         models.persist.save_model(model, model_path)
+        
+print(f"Number of graphs in test dataset: {len(d_test)}")
 
 # Run inference on the test data
 _, _, _, y_pred, y_truth, _ = models.trainer.model_test(model, test_dataloader, device, config)
@@ -98,8 +97,12 @@ epoch = config['EPOCHS'] - 1
 attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")
 np.save("attention_matrix.npy", attention[0])
 normalized_attn = visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)
-significant_pois, sorted_scores = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"])
-print(dataset.graphs[0].ndata["id"])
-print("\n*******\n")
+significant_pois, sorted_scores, sorted_indices = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"], plot=False)
+
 print(significant_pois)
-print(sorted_scores)
+
+for i in range(30):
+    rank = i
+    prediction_node_index = sorted_indices[i]
+    node_label = significant_pois[i]
+    visualizations.predictions.plot_prediction(test_dataloader, y_pred, y_truth, prediction_node_index, node_label, rank, config)

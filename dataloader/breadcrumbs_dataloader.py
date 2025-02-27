@@ -12,7 +12,7 @@ from . import splits
 
 class BreadcrumbsDataset(DGLDataset):
     def __init__(
-        self, config, root="", force_reload=False, verbose=False,
+        self, config, root="", force_reload=False, verbose=False, node_subset=None
     ):
         self.config = config
         self.graphs = []
@@ -20,6 +20,7 @@ class BreadcrumbsDataset(DGLDataset):
         self.n_edges = None
         self.mean = None
         self.std_dev = None
+        self.node_subset = node_subset
         super().__init__(
             name="breadcrumbs_dataset",
             raw_dir=root,
@@ -29,30 +30,39 @@ class BreadcrumbsDataset(DGLDataset):
 
     def process(self):
         data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0).values
+        if self.node_subset is not None:
+            selected_node_ids = [str(node_id) for node_id in self.node_subset]
+            data = data[selected_node_ids]
 
         # Leaving out normalization because most values in the dataset are 0 or 1
-        # self.mean = np.mean(data)
-        # self.std_dev = np.std(data)
-        # data = z_score(data, self.mean, self.std_dev)
-        self.mean = None        # Setting it to None ensure the un_zscore function is not called when evaluating
-        self.std_dev = None
+        self.mean = np.mean(data)
+        self.std_dev = np.std(data)
+        data = z_score(data, self.mean, self.std_dev)
+        # self.mean = None        # Setting it to None ensure the un_zscore function is not called when evaluating
+        # self.std_dev = None
 
         self.n_times, self.n_nodes = data.shape
 
-        G = nx.read_adjlist(self.raw_file_names[1])
-        node_ids = sorted(G.nodes(), key=int)
-        int_node_ids = [int(i) for i in node_ids]
+        if self.node_subset is None:
+            G = nx.read_adjlist(self.raw_file_names[1])
+            node_ids = sorted(G.nodes(), key=int)
+            int_node_ids = [int(i) for i in node_ids]
         
-        # Assert that the number of node IDs matches the number of nodes in the adjacency matrix
-        assert len(int_node_ids) == self.n_nodes, (
-            f"Mismatch between the number of node IDs ({len(int_node_ids)}) "
-            f"and the number of nodes ({self.n_nodes}) in the dataset."
-        )
+            # Assert that the number of node IDs matches the number of nodes in the adjacency matrix
+            assert len(int_node_ids) == self.n_nodes, (
+                f"Mismatch between the number of node IDs ({len(int_node_ids)}) "
+                f"and the number of nodes ({self.n_nodes}) in the dataset."
+            )
         
-        adj_mtx = nx.to_numpy_array(G, nodelist=node_ids)
+            adj_mtx = nx.to_numpy_array(G, nodelist=node_ids)
 
-        # Get the indices of non-zero elements (edges)
-        src, dst = np.nonzero(adj_mtx)
+            # Get the indices of non-zero elements (edges)
+            src, dst = np.nonzero(adj_mtx)
+        else:
+            num_selected = len(self.node_subset)
+            node_ids = sorted(self.node_subset, key=int)
+            int_node_ids = [int(i) for i in node_ids]
+            src, dst = zip(*[(i, j) for i in range(num_selected) for j in range(num_selected)])
 
         # Initialize edge index arrays based on non-zero elements
         self.n_edges = len(src)
