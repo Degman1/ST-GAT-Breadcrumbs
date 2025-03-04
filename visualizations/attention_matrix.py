@@ -26,7 +26,7 @@ def edge_attention_to_matrix(graph, edge_attention):
     return adj_matrix
 
 
-def build_attention_matrices(dataset, config, epoch, npz_dir):
+def build_attention_matrices(dataset, config, epoch, npz_dir, node_subset=None):
     graph = dataset.graphs[0]  # All graphs have the same structure, so we use the first graph for the structure
 
     # Collect attention matrices for each time slot
@@ -82,19 +82,17 @@ def build_attention_matrices(dataset, config, epoch, npz_dir):
     return attention_matrices
 
 
-def plot_heatmap(attn_matrix, epoch_number, time_slot, custom_node_ids=None, display_step=50):
+def plot_heatmap(attn_matrix, epoch_number, custom_node_ids=None, display_step=50):
     """
     Plot a heatmap of the attention matrix.
 
     :param attn_matrix: Node-to-node attention matrix.
     :param epoch_number: The current epoch number for labeling.
-    :param time_slot: The time slot associated with the attention matrix.
     :param custom_node_ids: Optional list of custom node IDs to display as axis labels.
     :param display_step: Step size to select custom node IDs for axis labels (default=50).
     """
-    attn_matrix_normalized = (attn_matrix - np.min(attn_matrix)) / (np.max(attn_matrix) - np.min(attn_matrix))
     plt.figure(figsize=(10, 8))
-    ax = sns.heatmap(attn_matrix_normalized, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8})
+    ax = sns.heatmap(attn_matrix, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8})
     plt.title(f"Attention Heatmap (Epoch {epoch_number})")
     
     if custom_node_ids is not None:
@@ -125,4 +123,3 @@ def plot_heatmap(attn_matrix, epoch_number, time_slot, custom_node_ids=None, dis
         bbox_inches="tight"
     )
     print(f"Attention heat map saved to {name}")
-    return attn_matrix_normalized

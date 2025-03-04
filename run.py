@@ -5,6 +5,7 @@ import importlib
 from dgl.dataloading import GraphDataLoader
 import os
 import pandas as pd
+import networkx as nx
 
 import dataloader.breadcrumbs_dataloader
 import dataloader.splits
@@ -14,6 +15,7 @@ import models.persist
 import visualizations.attention_matrix
 import visualizations.select_significant_pois
 import visualizations.predictions
+import visualizations.adjacency_matrix
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using {device}")
@@ -25,25 +27,39 @@ torch.manual_seed(0)
 
 model_dir, runs_dir = models.trainer.setup_directories("Predicting_Breadcrumbs_Movement")
 
-RETRAIN = True
+RETRAIN = False
 SAVE_MODEL = True
 SAVE_ATTENTION = True
 
+if RETRAIN and SAVE_ATTENTION:
+    models.trainer.delete_files_in_directory("./attn_values")
+
 config = {
     'BATCH_SIZE': 50,
-    'EPOCHS': 150,
+    'EPOCHS': 80,
     'WEIGHT_DECAY': 5e-5,
-    'INITIAL_LR': 3e-4,
+    'INITIAL_LR': 3e-4, #-3
     'CHECKPOINT_DIR': runs_dir,
     'N_PRED': 9,
     'N_HIST': 12,
     'DROPOUT': 0.2,
     'USE_GAT_WEIGHTS': True,
-    # number of measurements per day
-    'SLOTS_PER_DAY': 24,
 }
 
-dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config)
+node_subset = None
+# node_subset = [1, 13, 9, 25, 14, 5, 10, 35, 15, 106, 
+#                80, 7, 30, 8, 27, 51, 41, 49, 6, 29, 
+#                2, 90, 28, 17, 36, 33, 23, 86, 127, 105,
+#                107, 148, 111, 59, 11405, 147, 50, 55, 95, 16,
+#                18, 10863, 48, 215, 12, 142, 40, 10998, 158, 47,
+#                53, 84, 99, 21, 180, 10287, 45, 189, 10979, 79
+# ]
+#     68, 154, 26, 11538, 11866    52 11910   104 10305   176 10940    85
+#    188   207    32    22   156    91    76    57 10376     3 10901 10290
+#    110   134 11701   161   187   149   120   177   140 11397   164    61
+#    136    58    73   192]
+
+dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config, node_subset)
 print("Completed Data Preprocessing.")
 
 if config['D_MEAN'] is not None:
@@ -59,7 +75,7 @@ config['N_NODE'] = dataset.graphs[0].number_of_nodes()
 attn_matrices_by_batch_by_epoch = None
 
 if SAVE_ATTENTION:
-    epochs_for_saving_attn = [0, config['EPOCHS'] - 1]
+    epochs_for_saving_attn = [config['EPOCHS'] - 1]
 else:
     epochs_for_saving_attn = []
 
@@ -93,16 +109,44 @@ print(f"Number of graphs in test dataset: {len(d_test)}")
 # Run inference on the test data
 _, _, _, y_pred, y_truth, _ = models.trainer.model_test(model, test_dataloader, device, config)
 
+# Build the attention matrix from the stored data.
 epoch = config['EPOCHS'] - 1
-attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")
-np.save("attention_matrix.npy", attention[0])
-normalized_attn = visualizations.attention_matrix.plot_heatmap(attention[0], epoch, 1000, dataset.graphs[0].ndata["id"], 100)
-significant_pois, sorted_scores, sorted_indices = visualizations.select_significant_pois.get_significant_pois(normalized_attn, dataset.graphs[0].ndata["id"], plot=False)
+attention = visualizations.attention_matrix.build_attention_matrices(dataset, config, epoch, "attn_values")[0]
 
-print(significant_pois)
+# Normalize the attention with frobenius norm and save to file
+normalized_attention = attention / np.linalg.norm(attention, 'fro')
+np.save("normalized_attention.npy", normalized_attention)
 
-for i in range(30):
-    rank = i
-    prediction_node_index = sorted_indices[i]
-    node_label = significant_pois[i]
-    visualizations.predictions.plot_prediction(test_dataloader, y_pred, y_truth, prediction_node_index, node_label, rank, config)
+# Plot the attention as a heat map
+visualizations.attention_matrix.plot_heatmap(
+    normalized_attention, 
+    epoch, 
+    custom_node_ids=dataset.graphs[0].ndata["id"], 
+    display_step=100
+)
+
+# Compute POI rankings
+significant_pois, sorted_scores, sorted_indices = visualizations.select_significant_pois.get_significant_pois(
+    normalized_attention, 
+    dataset.graphs[0].ndata["id"], 
+    plot=True
+)
+
+print(f"Significant POIs:\n{significant_pois}")
+print(f"Corresponding Scores:\n{sorted_scores}")
+
+# Plot the subgraph of just the top ranked POIs
+# G = nx.read_adjlist("dataset/pruned_clustered_G3Hops.adjlist")
+# adj_mtx = nx.to_numpy_array(G)
+# subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(adj_mtx, sorted_indices[:60])
+# visualizations.adjacency_matrix.plot_adjacency_matrix(subgraph_adj_mtx, "./visualizations/subgraph_adj_mtx.png")
+
+# Plot the attention matrix of just the top ranked POIs
+# subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(normalized_attention, sorted_indices[:60])
+# visualizations.attention_matrix.plot_heatmap(subgraph_attn_mtx, epoch)
+
+# for i in range(30):
+#     rank = i
+#     prediction_node_index = sorted_indices[i]
+#     node_label = significant_pois[i]
+#     visualizations.predictions.plot_prediction_full(test_dataloader, y_pred, y_truth, prediction_node_index, node_label, rank, config)

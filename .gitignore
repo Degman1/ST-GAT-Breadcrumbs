@@ -167,5 +167,8 @@ trained_models/
 dataset/*
 visualizations/*.png
 visualizations/*.csv
+*.npy
 *.out
 attn_values/
+visualizations/predictions_hist/
+visualizations/subgraph_mtxs/

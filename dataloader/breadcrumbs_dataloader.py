@@ -29,10 +29,11 @@ class BreadcrumbsDataset(DGLDataset):
         )
 
     def process(self):
-        data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0).values
+        data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0)
         if self.node_subset is not None:
             selected_node_ids = [str(node_id) for node_id in self.node_subset]
             data = data[selected_node_ids]
+        data = data.values
 
         # Leaving out normalization because most values in the dataset are 0 or 1
         self.mean = np.mean(data)
@@ -155,10 +156,10 @@ class BreadcrumbsDataset(DGLDataset):
         return len(self.graphs)
 
 
-def get_processed_dataset(config):
+def get_processed_dataset(config, node_subset=None):
     # Number of possible windows in a day
 
-    dataset = BreadcrumbsDataset(config, root="./dataset", force_reload=True)
+    dataset = BreadcrumbsDataset(config, root="./dataset", force_reload=True, node_subset=node_subset)
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev

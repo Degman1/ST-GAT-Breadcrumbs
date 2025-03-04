@@ -21,4 +21,4 @@ def get_significant_pois(attention_matrix, customNodeIds=None, top_k=100, plot=T
         plt.savefig("visualizations/poi_significance.png", bbox_inches="tight")
         print("POI significance chart saved.")
 
-    return np.array(customNodeIds)[significant_pois] if customNodeIds is not None else significant_pois, sorted_scores, sorted_indices
+    return np.array(customNodeIds)[significant_pois] if customNodeIds is not None else significant_pois, sorted_scores[:top_k], sorted_indices

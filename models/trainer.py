@@ -14,6 +14,15 @@ from models.persist import save_attention_avg_compressed
 writer = SummaryWriter()
 
 
+def delete_files_in_directory(directory_path):
+    files = os.listdir(directory_path)
+    for file in files:
+        file_path = os.path.join(directory_path, file)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+    print(f"All files deleted successfully in {directory_path}.")
+
+
 def setup_directories(name):
     model_dir = f"./trained_models/{name}"
     if not os.path.exists(model_dir):

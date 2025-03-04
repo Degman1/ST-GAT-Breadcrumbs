@@ -24,8 +24,22 @@ def plot_adjacency_matrix(matrix, filename="adjacency_matrix.png"):
 
   plt.savefig(filename)
   plt.close()
-    
+
+def get_subgraph_adjacency(adj_matrix, node_indices):
+  """
+  Extracts the adjacency matrix for a subset of nodes.
+  
+  Parameters:
+  - adj_matrix (numpy.ndarray): The original adjacency matrix (N x N).
+  - node_indices (list or array): The indices of the nodes in the subgraph.
+  
+  Returns:
+  - sub_adj_matrix (numpy.ndarray): The adjacency matrix for the subgraph.
+  """
+  node_indices = np.array(node_indices)  # Ensure it's an array
+  return adj_matrix[np.ix_(node_indices, node_indices)]
+
 if __name__ == "__main__":
-    G = nx.read_adjlist("../dataset/pruned_clustered_G3Hops.adjlist")
+    G = nx.read_adjlist("../dataset/clustered_G3Hops.adjlist")
     adj_mtx = nx.to_numpy_array(G)
     plot_adjacency_matrix(adj_mtx)
