@@ -27,7 +27,7 @@ torch.manual_seed(0)
 
 model_dir, runs_dir = models.trainer.setup_directories("Predicting_Breadcrumbs_Movement")
 
-RETRAIN = False
+RETRAIN = True
 SAVE_MODEL = True
 SAVE_ATTENTION = True
 
@@ -38,7 +38,7 @@ config = {
     'BATCH_SIZE': 50,
     'EPOCHS': 80,
     'WEIGHT_DECAY': 5e-5,
-    'INITIAL_LR': 3e-4, #-3
+    'INITIAL_LR': 3e-4,
     'CHECKPOINT_DIR': runs_dir,
     'N_PRED': 9,
     'N_HIST': 12,
@@ -46,20 +46,7 @@ config = {
     'USE_GAT_WEIGHTS': True,
 }
 
-node_subset = None
-# node_subset = [1, 13, 9, 25, 14, 5, 10, 35, 15, 106, 
-#                80, 7, 30, 8, 27, 51, 41, 49, 6, 29, 
-#                2, 90, 28, 17, 36, 33, 23, 86, 127, 105,
-#                107, 148, 111, 59, 11405, 147, 50, 55, 95, 16,
-#                18, 10863, 48, 215, 12, 142, 40, 10998, 158, 47,
-#                53, 84, 99, 21, 180, 10287, 45, 189, 10979, 79
-# ]
-#     68, 154, 26, 11538, 11866    52 11910   104 10305   176 10940    85
-#    188   207    32    22   156    91    76    57 10376     3 10901 10290
-#    110   134 11701   161   187   149   120   177   140 11397   164    61
-#    136    58    73   192]
-
-dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config, node_subset)
+dataset, config['D_MEAN'], config['D_STD_DEV'], d_train, d_val, d_test = dataloader.breadcrumbs_dataloader.get_processed_dataset(config)
 print("Completed Data Preprocessing.")
 
 if config['D_MEAN'] is not None:

@@ -35,12 +35,9 @@ class BreadcrumbsDataset(DGLDataset):
             data = data[selected_node_ids]
         data = data.values
 
-        # Leaving out normalization because most values in the dataset are 0 or 1
         self.mean = np.mean(data)
         self.std_dev = np.std(data)
         data = z_score(data, self.mean, self.std_dev)
-        # self.mean = None        # Setting it to None ensure the un_zscore function is not called when evaluating
-        # self.std_dev = None
 
         self.n_times, self.n_nodes = data.shape
 

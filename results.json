@@ -1,0 +1,2596 @@
+{
+    "Results": [
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2653783857822418,
+            "completion_time": "2025-03-06 20:38:02.049938"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2540648877620697,
+            "completion_time": "2025-03-06 20:47:45.438120"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21749475598335266,
+            "completion_time": "2025-03-06 20:58:41.833884"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2700555920600891,
+            "completion_time": "2025-03-06 21:06:57.916368"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24154527485370636,
+            "completion_time": "2025-03-06 21:16:07.965560"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20934851467609406,
+            "completion_time": "2025-03-06 21:26:27.069083"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2646314799785614,
+            "completion_time": "2025-03-06 21:34:50.536933"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2415107935667038,
+            "completion_time": "2025-03-06 21:44:19.847633"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21161554753780365,
+            "completion_time": "2025-03-06 21:55:05.908980"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2667897343635559,
+            "completion_time": "2025-03-06 22:03:55.172936"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25190016627311707,
+            "completion_time": "2025-03-06 22:13:41.503908"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2153307944536209,
+            "completion_time": "2025-03-06 22:24:36.955637"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2641323208808899,
+            "completion_time": "2025-03-06 22:32:50.720661"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2413739264011383,
+            "completion_time": "2025-03-06 22:42:01.816139"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2095920294523239,
+            "completion_time": "2025-03-06 22:52:15.451489"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2727912962436676,
+            "completion_time": "2025-03-06 23:00:40.119081"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.254152774810791,
+            "completion_time": "2025-03-06 23:10:02.703009"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20800118148326874,
+            "completion_time": "2025-03-06 23:20:39.690110"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2645849883556366,
+            "completion_time": "2025-03-06 23:29:27.000001"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25188085436820984,
+            "completion_time": "2025-03-06 23:39:13.602860"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2181195467710495,
+            "completion_time": "2025-03-06 23:50:20.974381"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26071697473526,
+            "completion_time": "2025-03-06 23:58:35.909296"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24276195466518402,
+            "completion_time": "2025-03-07 00:07:48.616810"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2056049406528473,
+            "completion_time": "2025-03-07 00:18:13.503839"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2810492515563965,
+            "completion_time": "2025-03-07 00:26:41.709262"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2318791151046753,
+            "completion_time": "2025-03-07 00:36:15.280394"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22116605937480927,
+            "completion_time": "2025-03-07 00:47:01.973528"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26669296622276306,
+            "completion_time": "2025-03-07 00:55:50.626481"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2508697807788849,
+            "completion_time": "2025-03-07 01:05:38.919198"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2161901444196701,
+            "completion_time": "2025-03-07 01:16:35.520548"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2613670229911804,
+            "completion_time": "2025-03-07 01:24:50.748624"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2370041161775589,
+            "completion_time": "2025-03-07 01:34:02.437531"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2056339532136917,
+            "completion_time": "2025-03-07 01:44:27.296564"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26856857538223267,
+            "completion_time": "2025-03-07 01:52:52.012450"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2414124459028244,
+            "completion_time": "2025-03-07 02:02:24.521041"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21879951655864716,
+            "completion_time": "2025-03-07 02:13:12.487895"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2641472816467285,
+            "completion_time": "2025-03-07 02:21:59.634973"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2549287974834442,
+            "completion_time": "2025-03-07 02:31:47.768519"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21705639362335205,
+            "completion_time": "2025-03-07 02:42:40.884086"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.27068185806274414,
+            "completion_time": "2025-03-07 02:50:48.065025"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24703657627105713,
+            "completion_time": "2025-03-07 02:59:52.180270"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2113925665616989,
+            "completion_time": "2025-03-07 03:10:07.459556"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.268304705619812,
+            "completion_time": "2025-03-07 03:18:29.747791"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24049852788448334,
+            "completion_time": "2025-03-07 03:27:54.184666"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2119341343641281,
+            "completion_time": "2025-03-07 03:38:29.550055"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26678377389907837,
+            "completion_time": "2025-03-07 03:47:07.489628"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25337696075439453,
+            "completion_time": "2025-03-07 03:56:49.315304"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21570634841918945,
+            "completion_time": "2025-03-07 04:07:54.494113"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2666691243648529,
+            "completion_time": "2025-03-07 04:16:09.980751"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2375575602054596,
+            "completion_time": "2025-03-07 04:25:19.435461"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21083877980709076,
+            "completion_time": "2025-03-07 04:35:42.285262"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2710399329662323,
+            "completion_time": "2025-03-07 04:43:57.671482"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23859763145446777,
+            "completion_time": "2025-03-07 04:53:16.829901"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21885135769844055,
+            "completion_time": "2025-03-07 05:03:45.346552"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2476465255022049,
+            "completion_time": "2025-03-07 05:10:41.976598"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24745193123817444,
+            "completion_time": "2025-03-07 05:18:25.256244"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2047514170408249,
+            "completion_time": "2025-03-07 05:27:01.431116"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2474849969148636,
+            "completion_time": "2025-03-07 05:33:31.556296"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2473945915699005,
+            "completion_time": "2025-03-07 05:40:45.012081"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20382611453533173,
+            "completion_time": "2025-03-07 05:48:55.592366"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2536703050136566,
+            "completion_time": "2025-03-07 05:55:36.834612"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2339501827955246,
+            "completion_time": "2025-03-07 06:03:08.479787"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20733144879341125,
+            "completion_time": "2025-03-07 06:11:34.382712"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2524016797542572,
+            "completion_time": "2025-03-07 06:18:26.409267"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24151265621185303,
+            "completion_time": "2025-03-07 06:26:08.724123"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2052944153547287,
+            "completion_time": "2025-03-07 06:34:51.800774"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24951083958148956,
+            "completion_time": "2025-03-07 06:41:22.503527"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24164001643657684,
+            "completion_time": "2025-03-07 06:48:34.490455"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20318622887134552,
+            "completion_time": "2025-03-07 06:56:44.411679"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24985282123088837,
+            "completion_time": "2025-03-07 07:03:23.882366"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.22803866863250732,
+            "completion_time": "2025-03-07 07:10:55.141440"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20264394581317902,
+            "completion_time": "2025-03-07 07:19:22.357649"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24872402846813202,
+            "completion_time": "2025-03-07 07:26:17.514801"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2539806365966797,
+            "completion_time": "2025-03-07 07:33:59.992409"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21066012978553772,
+            "completion_time": "2025-03-07 07:42:38.838020"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2575157582759857,
+            "completion_time": "2025-03-07 07:49:08.593706"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25617465376853943,
+            "completion_time": "2025-03-07 07:56:22.349122"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2031235694885254,
+            "completion_time": "2025-03-07 08:04:32.282217"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2488088607788086,
+            "completion_time": "2025-03-07 08:11:11.757263"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2266009896993637,
+            "completion_time": "2025-03-07 08:18:42.556883"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20608031749725342,
+            "completion_time": "2025-03-07 08:27:06.804638"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24918916821479797,
+            "completion_time": "2025-03-07 08:33:57.988470"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.26703986525535583,
+            "completion_time": "2025-03-07 08:41:38.771276"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20268931984901428,
+            "completion_time": "2025-03-07 08:50:15.287295"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25218522548675537,
+            "completion_time": "2025-03-07 08:56:45.162025"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23333561420440674,
+            "completion_time": "2025-03-07 09:03:59.387215"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20418600738048553,
+            "completion_time": "2025-03-07 09:12:08.806183"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24591831862926483,
+            "completion_time": "2025-03-07 09:18:48.102494"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.22356799244880676,
+            "completion_time": "2025-03-07 09:26:19.158460"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20100770890712738,
+            "completion_time": "2025-03-07 09:34:43.174085"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2506099045276642,
+            "completion_time": "2025-03-07 09:41:37.657666"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2598189413547516,
+            "completion_time": "2025-03-07 09:49:19.967889"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20627044141292572,
+            "completion_time": "2025-03-07 09:57:57.014995"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2517646849155426,
+            "completion_time": "2025-03-07 10:04:25.069682"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.240681454539299,
+            "completion_time": "2025-03-07 10:11:38.635485"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20533274114131927,
+            "completion_time": "2025-03-07 10:19:47.543244"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.254964679479599,
+            "completion_time": "2025-03-07 10:26:27.152764"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25037750601768494,
+            "completion_time": "2025-03-07 10:33:58.357823"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22706718742847443,
+            "completion_time": "2025-03-07 10:42:23.919613"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24847188591957092,
+            "completion_time": "2025-03-07 10:49:15.834210"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25907137989997864,
+            "completion_time": "2025-03-07 10:56:57.388390"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20194967091083527,
+            "completion_time": "2025-03-07 11:05:34.097618"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24652241170406342,
+            "completion_time": "2025-03-07 11:12:02.475788"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2575038969516754,
+            "completion_time": "2025-03-07 11:19:15.894617"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20376498997211456,
+            "completion_time": "2025-03-07 11:27:26.096701"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24616976082324982,
+            "completion_time": "2025-03-07 11:34:05.180303"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2236085683107376,
+            "completion_time": "2025-03-07 11:41:35.851840"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.0005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20428681373596191,
+            "completion_time": "2025-03-07 11:50:00.952600"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2538994252681732,
+            "completion_time": "2025-03-07 11:56:02.124630"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23966769874095917,
+            "completion_time": "2025-03-07 12:02:47.074455"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2012709677219391,
+            "completion_time": "2025-03-07 12:10:27.633041"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2643412947654724,
+            "completion_time": "2025-03-07 12:16:11.105619"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2432776242494583,
+            "completion_time": "2025-03-07 12:22:32.792615"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2071428745985031,
+            "completion_time": "2025-03-07 12:29:42.676212"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2542118430137634,
+            "completion_time": "2025-03-07 12:35:34.605295"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2575576901435852,
+            "completion_time": "2025-03-07 12:42:11.155208"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2018129676580429,
+            "completion_time": "2025-03-07 12:49:35.199049"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24966596066951752,
+            "completion_time": "2025-03-07 12:55:41.695141"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24353061616420746,
+            "completion_time": "2025-03-07 13:02:27.020343"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20369672775268555,
+            "completion_time": "2025-03-07 13:10:03.540225"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25528326630592346,
+            "completion_time": "2025-03-07 13:15:45.099742"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2333025485277176,
+            "completion_time": "2025-03-07 13:22:06.459558"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20377185940742493,
+            "completion_time": "2025-03-07 13:29:16.375125"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24501021206378937,
+            "completion_time": "2025-03-07 13:35:07.906083"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.22324799001216888,
+            "completion_time": "2025-03-07 13:41:44.928700"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20200109481811523,
+            "completion_time": "2025-03-07 13:49:09.741446"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2530927360057831,
+            "completion_time": "2025-03-07 13:55:10.983382"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2368858903646469,
+            "completion_time": "2025-03-07 14:01:57.567918"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20598803460597992,
+            "completion_time": "2025-03-07 14:09:33.721699"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25230661034584045,
+            "completion_time": "2025-03-07 14:15:16.574226"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2608642280101776,
+            "completion_time": "2025-03-07 14:21:37.680860"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20634245872497559,
+            "completion_time": "2025-03-07 14:28:51.064121"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2480400651693344,
+            "completion_time": "2025-03-07 14:34:47.564721"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.253523051738739,
+            "completion_time": "2025-03-07 14:41:27.548315"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.200978621840477,
+            "completion_time": "2025-03-07 14:48:55.403952"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2536791265010834,
+            "completion_time": "2025-03-07 14:55:11.498105"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2493778020143509,
+            "completion_time": "2025-03-07 15:02:12.848946"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20376527309417725,
+            "completion_time": "2025-03-07 15:10:00.552026"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25002193450927734,
+            "completion_time": "2025-03-07 15:15:43.290684"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2383517026901245,
+            "completion_time": "2025-03-07 15:22:05.123651"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20186881721019745,
+            "completion_time": "2025-03-07 15:29:16.311816"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24337045848369598,
+            "completion_time": "2025-03-07 15:35:07.749633"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.219943568110466,
+            "completion_time": "2025-03-07 15:41:47.729959"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.19940459728240967,
+            "completion_time": "2025-03-07 15:49:18.706300"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2510620057582855,
+            "completion_time": "2025-03-07 15:55:31.621568"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24591758847236633,
+            "completion_time": "2025-03-07 16:02:30.718644"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20151661336421967,
+            "completion_time": "2025-03-07 16:10:24.374065"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2486553192138672,
+            "completion_time": "2025-03-07 16:16:11.502115"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23838932812213898,
+            "completion_time": "2025-03-07 16:22:32.862816"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20505554974079132,
+            "completion_time": "2025-03-07 16:29:43.529731"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25495338439941406,
+            "completion_time": "2025-03-07 16:35:35.621394"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2475922405719757,
+            "completion_time": "2025-03-07 16:42:12.918334"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2060154229402542,
+            "completion_time": "2025-03-07 16:49:38.271553"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25566408038139343,
+            "completion_time": "2025-03-07 16:55:43.007413"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.26065075397491455,
+            "completion_time": "2025-03-07 17:02:29.151653"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2079702466726303,
+            "completion_time": "2025-03-07 17:10:05.583655"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24854817986488342,
+            "completion_time": "2025-03-07 17:15:48.961754"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24456505477428436,
+            "completion_time": "2025-03-07 17:22:08.356773"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2021886557340622,
+            "completion_time": "2025-03-07 17:29:18.773453"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24507570266723633,
+            "completion_time": "2025-03-07 17:35:10.138332"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2393936663866043,
+            "completion_time": "2025-03-07 17:41:47.172145"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.001,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.19920383393764496,
+            "completion_time": "2025-03-07 17:49:10.974833"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25866732001304626,
+            "completion_time": "2025-03-07 17:53:33.694378"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25632959604263306,
+            "completion_time": "2025-03-07 17:58:27.941537"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21058069169521332,
+            "completion_time": "2025-03-07 18:04:00.984965"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24517913162708282,
+            "completion_time": "2025-03-07 18:08:10.818280"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2570558488368988,
+            "completion_time": "2025-03-07 18:12:47.056859"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21882133185863495,
+            "completion_time": "2025-03-07 18:17:59.371915"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.281586617231369,
+            "completion_time": "2025-03-07 18:22:15.992076"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24285197257995605,
+            "completion_time": "2025-03-07 18:27:05.164826"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21551211178302765,
+            "completion_time": "2025-03-07 18:32:28.471467"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2618598937988281,
+            "completion_time": "2025-03-07 18:37:03.733720"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25804635882377625,
+            "completion_time": "2025-03-07 18:42:03.963499"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2061869204044342,
+            "completion_time": "2025-03-07 18:47:40.271793"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.24658136069774628,
+            "completion_time": "2025-03-07 18:51:54.708621"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2329336702823639,
+            "completion_time": "2025-03-07 18:56:38.186216"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20854878425598145,
+            "completion_time": "2025-03-07 19:01:52.919612"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2625487744808197,
+            "completion_time": "2025-03-07 19:06:11.709233"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23843859136104584,
+            "completion_time": "2025-03-07 19:11:01.385713"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-06,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21221724152565002,
+            "completion_time": "2025-03-07 19:16:25.240534"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.25554296374320984,
+            "completion_time": "2025-03-07 19:20:48.704847"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23495955765247345,
+            "completion_time": "2025-03-07 19:25:45.231108"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21171274781227112,
+            "completion_time": "2025-03-07 19:31:23.183542"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26355627179145813,
+            "completion_time": "2025-03-07 19:35:38.171253"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.26721450686454773,
+            "completion_time": "2025-03-07 19:40:17.175520"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2202244997024536,
+            "completion_time": "2025-03-07 19:45:30.978232"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.28184348344802856,
+            "completion_time": "2025-03-07 19:49:49.506448"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.23953555524349213,
+            "completion_time": "2025-03-07 19:54:38.406588"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2180747091770172,
+            "completion_time": "2025-03-07 20:00:08.810008"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.27010685205459595,
+            "completion_time": "2025-03-07 20:04:40.050464"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2564290761947632,
+            "completion_time": "2025-03-07 20:09:41.349126"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20843474566936493,
+            "completion_time": "2025-03-07 20:15:18.548239"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2634870707988739,
+            "completion_time": "2025-03-07 20:19:33.046866"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24727681279182434,
+            "completion_time": "2025-03-07 20:24:16.235759"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22099672257900238,
+            "completion_time": "2025-03-07 20:29:37.366186"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2786652743816376,
+            "completion_time": "2025-03-07 20:33:59.119750"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2354404479265213,
+            "completion_time": "2025-03-07 20:38:55.091870"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 5e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21680136024951935,
+            "completion_time": "2025-03-07 20:44:24.913645"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.27219337224960327,
+            "completion_time": "2025-03-07 20:48:56.898032"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.28065603971481323,
+            "completion_time": "2025-03-07 20:53:58.183325"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.20886234939098358,
+            "completion_time": "2025-03-07 20:59:36.439498"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2581537365913391,
+            "completion_time": "2025-03-07 21:03:52.499911"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2384311705827713,
+            "completion_time": "2025-03-07 21:08:36.785355"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22236931324005127,
+            "completion_time": "2025-03-07 21:13:56.385175"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2675155699253082,
+            "completion_time": "2025-03-07 21:18:16.484055"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.25086891651153564,
+            "completion_time": "2025-03-07 21:23:07.014456"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.1,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.21831054985523224,
+            "completion_time": "2025-03-07 21:28:33.149449"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26353585720062256,
+            "completion_time": "2025-03-07 21:33:01.929448"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2372312992811203,
+            "completion_time": "2025-03-07 21:37:58.693044"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 12,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.2038535624742508,
+            "completion_time": "2025-03-07 21:43:35.491046"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.2553878724575043,
+            "completion_time": "2025-03-07 21:47:47.078727"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.2535746693611145,
+            "completion_time": "2025-03-07 21:52:24.100709"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 18,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22709858417510986,
+            "completion_time": "2025-03-07 21:57:38.373898"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.7,
+            "mae": 0.26811400055885315,
+            "completion_time": "2025-03-07 22:01:56.007368"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.8,
+            "mae": 0.24122492969036102,
+            "completion_time": "2025-03-07 22:06:45.527290"
+        },
+        {
+            "params": {
+                "INITIAL_LR": 0.005,
+                "WEIGHT_DECAY": 1e-05,
+                "DROPOUT": 0.2,
+                "N_HIST": 24,
+                "N_PRED": 9
+            },
+            "train_percent": 0.9,
+            "mae": 0.22474129498004913,
+            "completion_time": "2025-03-07 22:12:09.239408"
+        }
+    ]
+}

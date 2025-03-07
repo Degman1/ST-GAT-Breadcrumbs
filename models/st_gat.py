@@ -90,6 +90,10 @@ class ST_GAT(torch.nn.Module):
         x = graph.ndata["feat"].to(device)  # Node features
 
         x, attn = self.gat(graph, x)
+        # TODO Remove!!
+        del attn  # Free memory if not needed
+        torch.cuda.empty_cache()  # Clear GPU cache
+        attn = None
         
         x = F.dropout(x, self.dropout, training=self.training)
 

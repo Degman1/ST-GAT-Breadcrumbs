@@ -3,7 +3,6 @@ import torch.optim as optim
 from tqdm import tqdm
 import time
 import os
-import matplotlib.pyplot as plt
 
 from models.st_gat import ST_GAT
 from utils.math import *
@@ -67,6 +66,8 @@ def eval(
     all_attn_matrices = None
     
     pbar = None
+    
+    attn = None
 
     # Evaluate model on all data
     for i, batch in enumerate(dataloader):
