@@ -43,13 +43,13 @@ class BreadcrumbsDataset(DGLDataset):
 
         if self.node_subset is None:
             G = nx.read_adjlist(self.raw_file_names[1])
-            node_ids = sorted(G.nodes(), key=int)
+            node_ids = list(G.nodes())
             int_node_ids = [int(i) for i in node_ids]
         
             # Assert that the number of node IDs matches the number of nodes in the adjacency matrix
             assert len(int_node_ids) == self.n_nodes, (
                 f"Mismatch between the number of node IDs ({len(int_node_ids)}) "
-                f"and the number of nodes ({self.n_nodes}) in the dataset."
+                f" in the DGL graph and the number of nodes ({self.n_nodes}) in the timeseries dataset."
             )
         
             adj_mtx = nx.to_numpy_array(G, nodelist=node_ids)
@@ -134,8 +134,8 @@ class BreadcrumbsDataset(DGLDataset):
     @property
     def raw_file_names(self):
         return [
-            os.path.join(self.raw_dir, "pruned_ClusterTimeseries.csv"),
-            os.path.join(self.raw_dir, "pruned_clustered_G3Hops.adjlist"),
+            os.path.join(self.raw_dir, "pruned_clustered_3hop_timeseries.csv"),
+            os.path.join(self.raw_dir, "pruned_clustered_3hop_graph.adjlist"),
         ]
 
     @property

@@ -86,15 +86,15 @@ def validate_graph_and_timeseries(graph_path, timeseries_path):
 
 # Example usage
 if __name__ == "__main__":
-    graph_path = "dataset/clustered_G3Hops.adjlist"
+    graph_path = "dataset/clustered_G1Hops.adjlist"
     timeseries_path = "dataset/ClusterTimeseries.csv"
 
-    validate_graph_and_timeseries(graph_path, timeseries_path)
+    # validate_graph_and_timeseries(graph_path, timeseries_path)
     
     prune_graph_and_timeseries(
         graph_path=graph_path,
         timeseries_path=timeseries_path,
         min_degree=5,
-        output_graph_path="dataset/pruned_clustered_G3Hops.adjlist",
-        output_timeseries_path="dataset/pruned_ClusterTimeseries.csv",
+        output_graph_path="dataset/pruned_clustered_1hop_graph.adjlist",
+        output_timeseries_path="dataset/pruned_clustered_1hop_timeseries.csv",
     )

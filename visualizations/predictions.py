@@ -7,7 +7,7 @@ from scipy.interpolate import interp1d
 def plot_prediction(test_dataloader, y_pred, y_truth, node, node_label, rank, config, num_days=None):
     # Calculate the truth
     s = y_truth.shape
-    y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODE"], s[-1])
+    y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
     # just get the first prediction out for the nth node
     y_truth = y_truth[:, :, node, 0]
     # Flatten to get the predictions for entire test dataset
@@ -15,7 +15,7 @@ def plot_prediction(test_dataloader, y_pred, y_truth, node, node_label, rank, co
 
     # Calculate the predicted
     s = y_pred.shape
-    y_pred = y_pred.reshape(s[0], config["BATCH_SIZE"], config["N_NODE"], s[-1])
+    y_pred = y_pred.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
     # just get the first prediction out for the nth node
     y_pred = y_pred[:, :, node, 0]
     # Flatten to get the predictions for entire test dataset
@@ -52,13 +52,13 @@ def plot_prediction(test_dataloader, y_pred, y_truth, node, node_label, rank, co
 def plot_prediction_full(test_dataloader, y_pred, y_truth, node, node_label, rank, config, num_days=None, fine_grained_factor=10):
     # Calculate the truth
     s = y_truth.shape
-    y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODE"], s[-1])
+    y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
     y_truth = y_truth[:, :, node, 0]  # Extract truth for node
     y_truth = torch.flatten(y_truth)  # Flatten for plotting
 
     # Calculate the predicted
     s = y_pred.shape
-    y_pred = y_pred.reshape(s[0], config["BATCH_SIZE"], config["N_NODE"], s[-1])
+    y_pred = y_pred.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
 
     # Extract all 9 prediction steps for the node
     y_preds = [torch.flatten(y_pred[:, :, node, i]) for i in range(s[-1])]

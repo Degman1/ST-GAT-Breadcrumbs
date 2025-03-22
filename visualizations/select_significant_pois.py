@@ -4,7 +4,7 @@ from kneed import KneeLocator
 import torch
 
 def get_significant_pois(attention_matrix, customNodeIds=None, top_k=100, plot=True):
-    significance_scores = attention_matrix.sum(axis=1) + attention_matrix.sum(axis=0)
+    significance_scores = attention_matrix.sum(axis=0)
     sorted_indices = np.argsort(significance_scores)[::-1]
     sorted_scores = significance_scores[sorted_indices]
     significant_pois = sorted_indices[:top_k]

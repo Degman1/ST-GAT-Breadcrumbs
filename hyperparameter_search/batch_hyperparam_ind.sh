@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p gpu-preempt,gpu  # Partition
 #SBATCH -G 1  # Number of GPUs
-#SBATCH -t 1:00:00  # Job time limit
+#SBATCH -t 2:00:00  # Job time limit
 #SBATCH --constraint=vram40
 #SBATCH -o out/slurm-%j.out  # %j = job ID
 #SBATCH --mail-type=END
@@ -13,4 +13,6 @@
 module load conda/latest
 nvidia-smi
 conda activate /work/pi_hongkunz_umass_edu/dgerard/envs/deep-learning
-python run.py
+
+echo "Running with parameter combination index $1 and fold $2"
+python run_hyperparameter_search.py $1 $2

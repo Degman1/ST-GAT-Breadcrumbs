@@ -39,7 +39,6 @@ def save_attention_compressed(attn, batch_idx, epoch):
     
 def get_attention_filename(epoch, batch_idx):
     return f"{ATTENTION_SAVE_DIR}/epoch_{epoch}_batch_{batch_idx}.npz"
-
     
 def save_attention_avg_compressed(attn, batch_idx, epoch):
     """
