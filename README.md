@@ -1,4 +1,4 @@
-# GATMobilityAnalysis
+# ST-GAT-Breadcrumbs
 Applying GAT and LSTM to understand human mobility patterns and anomalies
 
 ## Environment Setup
