@@ -143,6 +143,9 @@ def model_train(
     save_attention_epochs,
     checkpoint_epochs,
     graph,
+    optimizer_state_dict=None,
+    lr_scheduler=True,
+    trained_model=None,
 ):
     """
     Trains a spatiotemporal graph attention network (ST-GAT) model using DGL graph masks, with support for
@@ -156,6 +159,9 @@ def model_train(
         save_attention_epochs (int): The epochs for saving attention matrices.
         checkpoint_epochs (int): The epochs for saving model checkpoints.
         graph (DGLGraph): The DGL graph structure to apply attention mechanisms on.
+        optimizer_state_dict (Dict, Optional): The checkpointed optimizer state
+        lr_scheduler (Bool, Optional): True if use a cosine annealing learning rate scheduler
+        trained_model (ST_GAT): The pre-trained model if finetuning
 
     Returns:
         model (torch.nn.Module): The trained ST-GAT model.
@@ -171,19 +177,45 @@ def model_train(
     writer = SummaryWriter()
 
     # Make the model. Each datapoint in the graph is 228x12: N x F (N = # nodes, F = time window)
-    model = ST_GAT(
-        in_channels=config["N_HIST"],
-        out_channels=config["N_PRED"],
-        n_nodes=config["N_NODES"],
-        dropout=config["DROPOUT"],
-    )
+    model = trained_model
+    if model is None:
+        model = ST_GAT(
+            in_channels=config["N_HIST"],
+            out_channels=config["N_PRED"],
+            n_nodes=config["N_NODES"],
+            dropout=config["DROPOUT"],
+        )
+
+    # Check which parameters are trainable
+    print("The following model layers are trainable")
+    found_trainable = False
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            found_trainable = True
+            print(f"\t- {name}")
+    if not found_trainable:
+        print("\tNone")
+
+    # Check which parameters are frozen
+    print("The following model layers are frozen")
+    found_frozen = False
+    for name, param in model.named_parameters():
+        if not param.requires_grad:
+            found_frozen = True
+            print(f"\t- {name}")
+    if not found_frozen:
+        print("\tNone")
 
     total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Total trainable parameters: {total_params}")
 
     optimizer = optim.Adam(
-        model.parameters(), lr=config["INITIAL_LR"], weight_decay=config["WEIGHT_DECAY"]
+        filter(lambda p: p.requires_grad, model.parameters()),
+        lr=config["INITIAL_LR"],
+        weight_decay=config["WEIGHT_DECAY"],
     )
+    if optimizer_state_dict is not None:
+        optimizer.load_state_dict(optimizer_state_dict)
     loss_fn = torch.nn.MSELoss()
 
     model.to(device)
@@ -205,14 +237,21 @@ def model_train(
     # es = models.early_stopping.EarlyStopping(patience=5, min_delta=0.0001)
     # last_lr = config["INITIAL_LR"]
     # print(f"*** Warm up learning rate starting at {warmup_scheduler.get_last_lr()[0]}")
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer,
-        T_max=80,  # Total epochs (full cosine cycle)
-        eta_min=1e-6,  # Minimum learning rate at the end
+
+    scheduler = None
+    if lr_scheduler:
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer,
+            T_max=80,  # Total epochs (full cosine cycle)
+            eta_min=1e-6,  # Minimum learning rate at the end
+        )
+
+    pretrained_epochs = (
+        config["PRETRAINED_EPOCHS"] if "PRETRAINED_EPOCHS" in config else 0
     )
 
     # For every epoch, train the model on training dataset. Evaluate model on validation dataset
-    for epoch in range(config["START_EPOCH"], config["START_EPOCH"] + config["EPOCHS"]):
+    for epoch in range(pretrained_epochs, pretrained_epochs + config["EPOCHS"]):
         # Single training pass
         loss = train(model, device, train_dataloader, optimizer, loss_fn, epoch)
         print(f"Loss: {loss:.3f}")
@@ -266,7 +305,8 @@ def model_train(
         #         last_lr = lr
 
         # Step the cosine annealing learning rate scheduler
-        scheduler.step()
+        if lr_scheduler:
+            scheduler.step()
 
         # Check early stopping
         # if es(val_mae):
@@ -274,21 +314,29 @@ def model_train(
         #     print(f"Early stopping at epoch {epoch + 1}")
         #     break
 
-    writer.flush()
+        # Add 1 to account for zero indexing
+        if (epoch + 1) in checkpoint_epochs:
+            # Save the model
+            timestr = time.strftime("%m-%d-%H:%M:%S")
+            torch.save(
+                {
+                    "epoch": epoch + 1,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_type": optimizer.__class__.__name__,
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "scheduler_type": scheduler.__class__.__name__,
+                    "scheduler_state_dict": scheduler.state_dict(),
+                    "loss": loss,
+                    "train_rmse": train_rmse,
+                    "train_mae": train_mae,
+                    "val_rmse": val_rmse,
+                    "val_mae": val_mae,
+                    "attention_by_epoch": attn_matrices_by_epoch,
+                },
+                os.path.join(config["CHECKPOINT_DIR"], f"model_{timestr}.pt"),
+            )
 
-    # Save the model
-    timestr = time.strftime("%m-%d-%H:%M:%S")
-    torch.save(
-        {
-            "epoch": epoch,
-            "model_state_dict": model.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
-            "scheduler_state_dict": scheduler.state_dict(),
-            "loss": loss,
-            "attention_by_epoch": attn_matrices_by_epoch,
-        },
-        os.path.join(config["CHECKPOINT_DIR"], f"model_{timestr}.pt"),
-    )
+    writer.flush()
 
     return model
 

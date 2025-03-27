@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import networkx as nx
 import random
+from enum import Enum
 
 import dataloader.breadcrumbs_dataloader
 import dataloader.splits
@@ -21,7 +22,6 @@ import visualizations.adjacency_matrix
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using {device}")
 print(f"Version {torch.__version__}")
-print(f"Version {dgl.__version__}")
 
 # Set random seeds for reproducibility
 torch.manual_seed(0)
@@ -37,22 +37,31 @@ torch.backends.cudnn.benchmark = False
 # Settings for data preprocessing and training
 config = {
     "BATCH_SIZE": 50,
-    "EPOCHS": 40,
+    "EPOCHS": 20,  # Epochs to train or finetune for (if applicable to the RUN_TYPE)
     "WEIGHT_DECAY": 5e-5,
-    "INITIAL_LR": 5e-4,
+    "INITIAL_LR": 0.0002018,  # 5e-4
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
     "N_PRED": 9,
     "N_HIST": 24,
     "DROPOUT": 0.3,
 }
 
+
+class RunType(Enum):
+    """Different types of run requests"""
+
+    TRAIN = 1  # Train a model from scratch
+    FINETUNE = 2  # Finetune a pre-trained model
+    LOAD = 3  # Load a pre-trained model
+
+
 # Set true to retrain or finetune model, false to load model
-RETRAIN = False
-# Set to name of saved model pt file if loading or finetuning (Applicable if RETRAIN=False)
-checkpoint_name = "model_03-21-231725.pt"
-# Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True)
+RUN_TYPE = RunType.FINETUNE
+# Set to name of saved model file if loading or finetuning (Applicable if RUN_TYPE = FINETUNE | LOAD_MODEL)
+checkpoint_name = "stage1_45epochs.pt"
+# Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True; starts @ epoch 1)
 save_attention_epochs = [config["EPOCHS"]]
-# Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True)
+# Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True; starts @ epoch 1)
 checkpoint_epochs = [config["EPOCHS"]]
 
 ##################################################################################################
@@ -65,10 +74,6 @@ dataset, config["D_MEAN"], config["D_STD_DEV"], d_train, d_val, d_test = (
     dataloader.breadcrumbs_dataloader.get_processed_dataset(config)
 )
 print("Completed Data Preprocessing.")
-
-# Indicate if the data was normalized during preprocessing
-if config["D_MEAN"] is not None:
-    print("NOTE: Normalized time series data during preprocessing.")
 
 # Build the test set DGL dataloader
 test_dataloader = GraphDataLoader(
@@ -84,8 +89,19 @@ config["N_EDGES"] = dataset.graphs[0].number_of_edges()
 ##################################################################################################
 # Training OR Model Loading
 
-if not RETRAIN:
-    checkpoint_path = config["CHECKPOINT_DIR"] + "/" + checkpoint_name
+if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
+    if checkpoint_name is None or checkpoint_name == "":
+        print(
+            f"ERROR: Must input a valid checkpoint file for 'checkpoint_name' variable."
+        )
+        exit()
+
+    checkpoint_path = os.path.join(config["CHECKPOINT_DIR"], checkpoint_name)
+
+    if not os.path.exists(checkpoint_path):
+        print(f"ERROR: Checkpoint file {checkpoint_path} does not exist.")
+        exit()
+
     print(f"Loading checkpoint found at {checkpoint_path}.")
     checkpoint = torch.load(checkpoint_path, weights_only=False)
 
@@ -96,22 +112,62 @@ if not RETRAIN:
         dropout=config["DROPOUT"],
     )
 
-    if "model_state_dict" in checkpoint:
-        model.load_state_dict(checkpoint["model_state_dict"])
-    else:
-        print(
-            "ERROR: The 'model_state_dict' key is not found in the selected checkpoint file."
-        )
-        exit()
+    model.load_state_dict(checkpoint["model_state_dict"])
 
-    if "attention_by_epoch" in checkpoint:
-        attention_by_epoch = checkpoint["attention_by_epoch"]
-    else:
-        print(
-            "ERROR: The 'attention_by_epoch' key is not found in the selected checkpoint file."
+    print(
+        f"The loaded model trained for {checkpoint['epoch']} epochs and resulted in a the following metrics:"
+    )
+    print(f"\tLoss: {checkpoint['loss']}")
+    print(f"\tTrain MAE: {checkpoint['train_mae']}")
+    print(f"\tTrain RMSE: {checkpoint['train_rmse']}")
+    print(f"\tValidation MAE: {checkpoint['val_mae']}")
+    print(f"\tValidation RMSE: {checkpoint['val_rmse']}")
+
+    if RUN_TYPE == RunType.FINETUNE:
+        # Now finetune the model that was loaded.
+        for name, layer in model.named_children():
+            if name == "gat":
+                for param in layer.parameters():
+                    param.requires_grad = False
+        print("The following model layers are frozen")
+        train_dataloader = GraphDataLoader(
+            d_train, batch_size=config["BATCH_SIZE"], shuffle=True
         )
-        exit()
-else:
+        val_dataloader = GraphDataLoader(
+            d_val, batch_size=config["BATCH_SIZE"], shuffle=True
+        )
+
+        config["PRETRAINED_EPOCHS"] = checkpoint["epoch"]
+        for i in range(len(save_attention_epochs)):
+            save_attention_epochs[i] += checkpoint["epoch"]
+        for i in range(len(checkpoint_epochs)):
+            checkpoint_epochs[i] += checkpoint["epoch"]
+
+        print(f"Number of graphs in training dataset: {len(d_train)}")
+        print(f"Number of graphs in validation dataset: {len(d_val)}")
+
+        print(
+            f"Training the pre-trained {checkpoint['epoch']}-epoch model over a maximum of {config['EPOCHS']} epochs."
+        )
+
+        print(f"Configuration: {config}")
+        print(f"Save Attention Epochs: {save_attention_epochs}")
+        print(f"Checkpoint Epochs: {checkpoint_epochs}")
+
+        # Configure and train model
+        models.trainer.model_train(
+            train_dataloader,
+            val_dataloader,
+            config,
+            device,
+            save_attention_epochs,
+            checkpoint_epochs,
+            dataset.graphs[0],
+            None,
+            True,
+            model,
+        )
+elif RUN_TYPE == RunType.TRAIN:
     train_dataloader = GraphDataLoader(
         d_train, batch_size=config["BATCH_SIZE"], shuffle=True
     )
@@ -124,6 +180,10 @@ else:
 
     print(f"Training model over a maximum of {config['EPOCHS']} epochs.")
 
+    print(f"Configuration: {config}")
+    print(f"Save Attention Epochs: {save_attention_epochs}")
+    print(f"Checkpoint Epochs: {checkpoint_epochs}")
+
     # Configure and train model
     model = models.trainer.model_train(
         train_dataloader,
@@ -131,8 +191,13 @@ else:
         config,
         device,
         save_attention_epochs,
+        checkpoint_epochs,
         dataset.graphs[0],
+        lr_scheduler=True,
     )
+else:
+    print("ERROR: Invalid run type specified.")
+    exit()
 
 print(f"Number of graphs in test dataset: {len(d_test)}")
 

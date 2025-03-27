@@ -45,13 +45,13 @@ class BreadcrumbsDataset(DGLDataset):
             G = nx.read_adjlist(self.raw_file_names[1])
             node_ids = list(G.nodes())
             int_node_ids = [int(i) for i in node_ids]
-        
+
             # Assert that the number of node IDs matches the number of nodes in the adjacency matrix
             assert len(int_node_ids) == self.n_nodes, (
                 f"Mismatch between the number of node IDs ({len(int_node_ids)}) "
                 f" in the DGL graph and the number of nodes ({self.n_nodes}) in the timeseries dataset."
             )
-        
+
             adj_mtx = nx.to_numpy_array(G, nodelist=node_ids)
 
             # Get the indices of non-zero elements (edges)
@@ -60,7 +60,9 @@ class BreadcrumbsDataset(DGLDataset):
             num_selected = len(self.node_subset)
             node_ids = sorted(self.node_subset, key=int)
             int_node_ids = [int(i) for i in node_ids]
-            src, dst = zip(*[(i, j) for i in range(num_selected) for j in range(num_selected)])
+            src, dst = zip(
+                *[(i, j) for i in range(num_selected) for j in range(num_selected)]
+            )
 
         # Initialize edge index arrays based on non-zero elements
         self.n_edges = len(src)
@@ -79,7 +81,7 @@ class BreadcrumbsDataset(DGLDataset):
         for t in range(self.n_hist, n_timepoints - self.n_pred):
             # Create a new graph based on the adjacency matrix structure
             g = dgl.graph((edge_index[0], edge_index[1]), num_nodes=self.n_nodes)
-            # Self loops are now added in 
+            # Self loops are now added in
             # g = dgl.add_self_loop(g)
 
             # Set edge weights (optional)
@@ -98,15 +100,17 @@ class BreadcrumbsDataset(DGLDataset):
 
             # Node labels: next `n_pred` time samples (prediction)
             g.ndata["label"] = torch.FloatTensor(full_window[:, self.n_hist :])
-            
+
             # Tag the nodes with the original POI ids
             g.ndata["id"] = torch.IntTensor(int_node_ids)
 
             # Append graph to the list
             self.graphs.append(g)
-            
-        print(f"Generated {len(self.graphs)} different graphs from the timeseries data each " \
-            f"with the same {self.graphs[0].number_of_nodes()} nodes and {self.graphs[0].number_of_edges()} edges.")
+
+        print(
+            f"Generated {len(self.graphs)} different graphs from the normalized timeseries data each "
+            f"with the same {self.graphs[0].number_of_nodes()} nodes and {self.graphs[0].number_of_edges()} edges."
+        )
 
     def save(self):
         # Save processed dataset
@@ -156,7 +160,9 @@ class BreadcrumbsDataset(DGLDataset):
 def get_processed_dataset(config, node_subset=None):
     # Number of possible windows in a day
 
-    dataset = BreadcrumbsDataset(config, root="./dataset", force_reload=True, node_subset=node_subset)
+    dataset = BreadcrumbsDataset(
+        config, root="./dataset", force_reload=True, node_subset=node_subset
+    )
 
     d_mean = dataset.mean
     d_std_dev = dataset.std_dev
