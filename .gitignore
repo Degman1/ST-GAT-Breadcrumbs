@@ -175,3 +175,4 @@ attn_values/
 visualizations/predictions_hist/
 visualizations/subgraph_mtxs/
 hyperparameter_search/results/
+output/

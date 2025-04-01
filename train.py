@@ -37,9 +37,9 @@ torch.backends.cudnn.benchmark = False
 # Settings for data preprocessing and training
 config = {
     "BATCH_SIZE": 50,
-    "EPOCHS": 20,  # Epochs to train or finetune for (if applicable to the RUN_TYPE)
+    "EPOCHS": 30,
     "WEIGHT_DECAY": 5e-5,
-    "INITIAL_LR": 0.0002018,  # 5e-4
+    "INITIAL_LR": 5e-5,
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
     "N_PRED": 9,
     "N_HIST": 24,
@@ -56,9 +56,9 @@ class RunType(Enum):
 
 
 # Set true to retrain or finetune model, false to load model
-RUN_TYPE = RunType.FINETUNE
+RUN_TYPE = RunType.LOAD
 # Set to name of saved model file if loading or finetuning (Applicable if RUN_TYPE = FINETUNE | LOAD_MODEL)
-checkpoint_name = "stage1_45epochs.pt"
+checkpoint_name = "finetune_testing_pred12/stage1_55epochs.pt"
 # Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True; starts @ epoch 1)
 save_attention_epochs = [config["EPOCHS"]]
 # Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True; starts @ epoch 1)
@@ -129,7 +129,7 @@ if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
             if name == "gat":
                 for param in layer.parameters():
                     param.requires_grad = False
-        print("The following model layers are frozen")
+
         train_dataloader = GraphDataLoader(
             d_train, batch_size=config["BATCH_SIZE"], shuffle=True
         )

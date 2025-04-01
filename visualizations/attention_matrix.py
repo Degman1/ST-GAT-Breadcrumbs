@@ -162,6 +162,6 @@ def plot_heatmap(attn_matrix, epoch_number, custom_node_ids=None, display_step=5
 
     plt.xlabel("Source Node")
     plt.ylabel("Destination Node")
-    name = f"visualizations/attention_heatmap_epoch{epoch_number}.png"
+    name = f"output/attention_heatmap_epoch{epoch_number}.png"
     plt.savefig(name, bbox_inches="tight")
     print(f"Attention heat map saved to {name}")

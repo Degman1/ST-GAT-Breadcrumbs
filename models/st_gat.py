@@ -90,12 +90,14 @@ class ST_GAT(torch.nn.Module):
         x = graph.ndata["feat"].to(device)  # Node features
 
         x, attn = self.gat(graph, x)
-        
+
         x = F.dropout(x, self.dropout, training=self.training)
 
         # RNN: 2 LSTM
         batch_size = graph.batch_size if hasattr(graph, "batch_size") else 1
-        x = x.view(batch_size, self.n_nodes, -1).permute(2, 0, 1)  # [seq_length, batch_size, n_nodes]
+        x = x.view(batch_size, self.n_nodes, -1).permute(
+            2, 0, 1
+        )  # [seq_length, batch_size, n_nodes]
 
         # Pass through LSTM layers
         x, _ = self.lstm1(x)

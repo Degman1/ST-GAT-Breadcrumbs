@@ -13,4 +13,4 @@
 module load conda/latest
 nvidia-smi
 conda activate /work/pi_hongkunz_umass_edu/dgerard/envs/deep-learning
-python run.py
+python train.py
