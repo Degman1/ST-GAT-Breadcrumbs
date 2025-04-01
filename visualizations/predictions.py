@@ -5,7 +5,7 @@ from scipy.interpolate import interp1d
 
 
 def plot_prediction(
-    test_dataloader, y_pred, y_truth, node, node_label, rank, config, num_days=None
+    test_dataloader, y_pred, y_truth, node, node_label, rank, config, num_days=None, anomaly_threshold_multiplier=5
 ):
     # Calculate the truth
     s = y_truth.shape
@@ -39,7 +39,7 @@ def plot_prediction(
     # Compute anomalies (only for timestep 1)
     abs_errors = torch.abs(y_pred - y_truth)  # Absolute error at timestep 1
     avg_error = torch.mean(abs_errors)  # Compute mean absolute error
-    anomaly_threshold = 5 * avg_error  # Set threshold
+    anomaly_threshold = anomaly_threshold_multiplier * avg_error  # Set threshold
 
     anomaly_indices = torch.where(abs_errors > anomaly_threshold)[0].numpy()
 
@@ -76,6 +76,7 @@ def plot_prediction_full(
     config,
     num_days=None,
     fine_grained_factor=10,
+    anomaly_threshold_multiplier=5
 ):
     # Calculate the truth
     s = y_truth.shape
@@ -119,7 +120,7 @@ def plot_prediction_full(
     # Compute anomalies (only for timestep 1)
     abs_errors = torch.abs(y_preds[0] - y_truth)  # Absolute error at timestep 1
     avg_error = torch.mean(abs_errors)  # Compute mean absolute error
-    anomaly_threshold = 5 * avg_error  # Set threshold
+    anomaly_threshold = anomaly_threshold_multiplier * avg_error  # Set threshold
 
     anomaly_indices = torch.where(abs_errors > anomaly_threshold)[0].numpy()
 

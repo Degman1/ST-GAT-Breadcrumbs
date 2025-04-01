@@ -76,9 +76,20 @@ class BreadcrumbsDataset(DGLDataset):
         self.n_pred = self.config["N_PRED"]
         self.n_hist = self.config["N_HIST"]
 
+        # Load timestamps from CSV row headers (index)
+        self.full_timestamps = pd.to_datetime(
+            pd.read_csv(self.raw_file_names[0], index_col=0).index,
+            format="%Y-%m-%dT-%H-%M",
+        )
+
         # Iterate through each time window to create graphs
         n_timepoints = data.shape[0]
-        for t in range(self.n_hist, n_timepoints - self.n_pred):
+
+        self.graph_timestamps = self.full_timestamps[
+            self.n_hist : n_timepoints - self.n_pred + 1
+        ]
+
+        for t in range(self.n_hist, n_timepoints - self.n_pred + 1):
             # Create a new graph based on the adjacency matrix structure
             g = dgl.graph((edge_index[0], edge_index[1]), num_nodes=self.n_nodes)
             # Self loops are now added in
@@ -103,6 +114,9 @@ class BreadcrumbsDataset(DGLDataset):
 
             # Tag the nodes with the original POI ids
             g.ndata["id"] = torch.IntTensor(int_node_ids)
+
+            # Assign datetime at the graph level as the time at the first ground truth prediction
+            g.graph_data = {"datetime": self.full_timestamps[t]}
 
             # Append graph to the list
             self.graphs.append(g)
