@@ -135,7 +135,7 @@ def plot_heatmap(
     :param scale_fn: The transformation function to scale the heatmap and better visualize weights
     """
     plt.figure(figsize=(10, 8))
-    log_attn_matrix = scale_fn(attn_matrix)
+    log_attn_matrix = transform(attn_matrix)
     ax = sns.heatmap(
         log_attn_matrix, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8}
     )
