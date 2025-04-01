@@ -122,7 +122,9 @@ def build_attention_matrices(dataset, config, epoch, npz_dir, node_subset=None):
     return attention_matrices
 
 
-def plot_heatmap(attn_matrix, epoch_number, custom_node_ids=None, display_step=50):
+def plot_heatmap(
+    attn_matrix, epoch_number, custom_node_ids=None, display_step=50, transform=np.log1p
+):
     """
     Plot a heatmap of the attention matrix.
 
@@ -130,10 +132,12 @@ def plot_heatmap(attn_matrix, epoch_number, custom_node_ids=None, display_step=5
     :param epoch_number: The current epoch number for labeling.
     :param custom_node_ids: Optional list of custom node IDs to display as axis labels.
     :param display_step: Step size to select custom node IDs for axis labels (default=50).
+    :param scale_fn: The transformation function to scale the heatmap and better visualize weights
     """
     plt.figure(figsize=(10, 8))
+    log_attn_matrix = scale_fn(attn_matrix)
     ax = sns.heatmap(
-        attn_matrix, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8}
+        log_attn_matrix, cmap="Blues", annot=False, fmt=".2f", cbar_kws={"shrink": 0.8}
     )
     plt.title(f"Attention Heatmap (Epoch {epoch_number})")
 
@@ -162,6 +166,6 @@ def plot_heatmap(attn_matrix, epoch_number, custom_node_ids=None, display_step=5
 
     plt.xlabel("Source Node")
     plt.ylabel("Destination Node")
-    name = f"output/attention_heatmap_epoch{epoch_number}.png"
+    name = f"./output/attention_heatmap_epoch{epoch_number}.png"
     plt.savefig(name, bbox_inches="tight")
     print(f"Attention heat map saved to {name}")

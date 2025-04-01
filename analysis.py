@@ -122,14 +122,14 @@ print(f"Corresponding Scores:\n{sorted_scores}")
 
 G = nx.read_adjlist("dataset/pruned_clustered_3hop_graph.adjlist")
 adj_mtx = nx.to_numpy_array(G)
-subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(
+subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph(
     adj_mtx, sorted_indices[:n_top_pois]
 )
 visualizations.adjacency_matrix.plot_adjacency_matrix(
     subgraph_adj_mtx, "./output/subgraph_adj_mtx.png"
 )
 
-subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(
+subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph(
     attention, sorted_indices[:n_top_pois]
 )
 visualizations.attention_matrix.plot_heatmap(subgraph_attn_mtx, epoch)

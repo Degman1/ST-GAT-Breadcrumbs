@@ -244,11 +244,11 @@ _, _, _, y_pred, y_truth, _ = models.trainer.model_test(
 # Plot the subgraph of just the top ranked POIs
 # G = nx.read_adjlist("dataset/pruned_clustered_G3Hops.adjlist")
 # adj_mtx = nx.to_numpy_array(G)
-# subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(adj_mtx, sorted_indices[:60])
+# subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph(adj_mtx, sorted_indices[:60])
 # visualizations.adjacency_matrix.plot_adjacency_matrix(subgraph_adj_mtx, "./visualizations/subgraph_adj_mtx.png")
 
 # Plot the attention matrix of just the top ranked POIs
-# subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph_adjacency(normalized_attention, sorted_indices[:60])
+# subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph(normalized_attention, sorted_indices[:60])
 # visualizations.attention_matrix.plot_heatmap(subgraph_attn_mtx, epoch)
 
 ##################################################################################################

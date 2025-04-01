@@ -27,7 +27,7 @@ def plot_adjacency_matrix(matrix, filename="adjacency_matrix.png"):
     print(f"Adjacency matrix plot saved to {filename}")
 
 
-def get_subgraph_adjacency(adj_matrix, node_indices):
+def get_subgraph(adj_matrix, node_indices):
     """
     Extracts the adjacency matrix for a subset of nodes.
 
