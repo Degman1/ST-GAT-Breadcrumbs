@@ -10,7 +10,7 @@ The goal is to reduce the number of points of interest (POIs) in the dataset whi
    - The model learns to weigh important POIs based on long-term influence.
    - Perform grid-search with expanding window cross validation approach (time-series friendly) to select proper hyperparameters
    - Implement the cosine annealing (no restarts) learning rate scheduler to decay the learning rate as the model approaches convergence.
-   - Freeze the GAT layer weights in attempt to independantly fine-tune the 2 LSTM layers.
+   - Freeze the GAT layer weights in attempt to independantly fine-tune the 2 LSTM layers and final linear layer.
 
 2. **Extract Attention Scores to Rank POIs**  
    - Use the trained model’s GAT attention values to compute a measure of **significance** for each POI.

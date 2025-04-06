@@ -5,8 +5,36 @@ from scipy.interpolate import interp1d
 
 
 def plot_prediction(
-    test_dataloader, y_pred, y_truth, node, node_label, rank, config, num_days=None, anomaly_threshold_multiplier=5
+    test_dataloader,
+    y_pred,
+    y_truth,
+    node,
+    node_label,
+    rank,
+    config,
+    num_days=None,
+    anomaly_threshold_multiplier=5,
 ):
+    """Plot the predictions for just one timestep (1 hour) into the future against the ground
+    truth. Highlight regions in yellow that are outside the anomaly threshold.
+
+    Args:
+        test_dataloader (_type_): The test DGL dataloader
+        y_pred (_type_): The predictions on the test data set
+        y_truth (_type_): The ground truth from the test data set
+        node (_type_): The node from which to analyze predictions
+        node_label (_type_): The label (cluster id) to display
+        rank (_type_): The rank of the node to display
+        config (_type_): The ST-GAT model configuration
+        num_days (_type_, optional): The number of total days to analyze.
+            Utilizes all test data if None.
+        anomaly_threshold_multiplier (int, optional): An anomaly is classified as if
+            (|err| > average_abs_err * anomaly_threshold_multiplier). Defaults to 5.
+
+    Returns:
+        list: The list of anomalies as indices of the test data set hours (ie. anomaly at
+            index 5 corresponds to an anomaly at hour 5 of the test data)
+    """
     # Calculate the truth
     s = y_truth.shape
     y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
@@ -76,8 +104,29 @@ def plot_prediction_full(
     config,
     num_days=None,
     fine_grained_factor=10,
-    anomaly_threshold_multiplier=5
+    anomaly_threshold_multiplier=5,
 ):
+    """Plot the predictions for all timesteps (full 9 hours) into the future against the ground
+    truth. Highlight regions in yellow that are outside the anomaly threshold.
+
+    Args:
+        test_dataloader (_type_): The test DGL dataloader
+        y_pred (_type_): The predictions on the test data set
+        y_truth (_type_): The ground truth from the test data set
+        node (_type_): The node from which to analyze predictions
+        node_label (_type_): The label (cluster id) to display
+        rank (_type_): The rank of the node to display
+        config (_type_): The ST-GAT model configuration
+        num_days (_type_, optional): The number of total days to analyze.
+            Utilizes all test data if None.
+        fine_grained_factor (_type_, optional): Determines how fine grained to visualize the predictions
+        anomaly_threshold_multiplier (int, optional): An anomaly is classified as if
+            (|err| > average_abs_err * anomaly_threshold_multiplier). Defaults to 5.
+
+    Returns:
+        list: The list of anomalies as indices of the test data set hours (ie. anomaly at
+            index 5 corresponds to an anomaly at hour 5 of the test data)
+    """
     # Calculate the truth
     s = y_truth.shape
     y_truth = y_truth.reshape(s[0], config["BATCH_SIZE"], config["N_NODES"], s[-1])
