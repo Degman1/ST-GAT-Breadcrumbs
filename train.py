@@ -60,7 +60,7 @@ RUN_TYPE = RunType.LOAD
 # Set to name of saved model file if loading or finetuning (Applicable if RUN_TYPE = FINETUNE | LOAD_MODEL)
 checkpoint_name = "finetune_testing_pred12/stage1_55epochs.pt"
 # Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True; starts @ epoch 1)
-save_attention_epochs = [config["EPOCHS"]]
+save_attention_epochs = []
 # Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True; starts @ epoch 1)
 checkpoint_epochs = [config["EPOCHS"]]
 

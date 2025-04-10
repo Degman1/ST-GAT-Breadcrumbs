@@ -363,3 +363,22 @@ def model_test(model, test_dataloader, device, config):
 
     model.eval()
     return eval(model, device, test_dataloader, config, "Test")
+
+
+def model_test_get_attention(model, anomalous_graph, device, config):
+    """Runs a forward pass through the model for a single graph (single time step)
+    to compute the attention matrix for that point in time.
+
+    Args:
+        model (_type_): _description_
+        anomalous_graph (_type_): _description_
+        device (_type_): _description_
+        config (_type_): _description_
+    """
+    model.eval()
+    anomalous_graph.to(device)
+    with torch.no_grad():
+        pred, edge_attention = model(anomalous_graph, device)
+    ave_atn = torch.mean
+    matrix = edge_attention_to_matrix(anomalous_graph, edge_attention.mean(dim=1))
+    return matrix

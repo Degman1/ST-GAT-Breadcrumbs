@@ -14,6 +14,8 @@ def edge_attention_to_matrix(graph, edge_attention):
     :param edge_attention: Edge attention weights of shape (E,) or (E, 1), where E is the number of edges
     :return: Node-to-node attention matrix of shape (N, N), where N is the number of nodes in the graph
     """
+    edge_attention = edge_attention.cpu()
+    graph = graph.cpu()
     num_nodes = graph.num_nodes()
     adj_matrix = np.zeros((num_nodes, num_nodes))
 

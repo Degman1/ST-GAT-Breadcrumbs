@@ -29,7 +29,7 @@ def get_significant_pois(
         plt.legend()
         location = "./output/poi_significance.png"
         plt.savefig(location, bbox_inches="tight")
-        print(f"POI significance chart saved at {location}.")
+        print(f"POI significance chart saved at {location}")
 
     return (
         (
