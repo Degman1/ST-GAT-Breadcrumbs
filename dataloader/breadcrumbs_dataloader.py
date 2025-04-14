@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from dgl.data import DGLDataset
 import networkx as nx
+import matplotlib.pyplot as plt
 
 from utils.math import z_score
 from . import splits
@@ -29,15 +30,57 @@ class BreadcrumbsDataset(DGLDataset):
         )
 
     def process(self):
-        data = pd.read_csv(self.raw_file_names[0], index_col=0, header=0)
+        data_pd = pd.read_csv(self.raw_file_names[0], index_col=0, header=0)
         if self.node_subset is not None:
             selected_node_ids = [str(node_id) for node_id in self.node_subset]
-            data = data[selected_node_ids]
-        data = data.values
+            data_pd = data_pd[selected_node_ids]
+        data = data_pd.values
 
         self.mean = np.mean(data)
         self.std_dev = np.std(data)
         data = z_score(data, self.mean, self.std_dev)
+
+        # Compute per-node mean and sparsity
+        node_means = data_pd.mean(axis=0)
+        zero_percent = (data_pd == 0).sum(axis=0) / len(data_pd) * 100
+
+        plt.figure(figsize=(4, 6))
+        plt.boxplot(node_means, vert=True, patch_artist=True, showfliers=False)
+        plt.title("Density Mean Distribution")
+        plt.ylabel("Mean Density")
+        plt.grid(axis="y")
+        plt.tight_layout()
+        plt.savefig("output/boxplot_node_means.png", dpi=300)
+
+        plt.figure(figsize=(4, 6))
+        plt.boxplot(zero_percent, vert=True, patch_artist=True, showfliers=False)
+        plt.title("Density Sparcity Distribution")
+        plt.ylabel("Sparcity Percent")
+        plt.grid(axis="y")
+        plt.tight_layout()
+        plt.savefig("output/boxplot_node_sparsity.png", dpi=300)
+
+        # Get top 60 nodes with highest mean
+        top_60_mean_nodes = node_means.sort_values(ascending=False).head(60)
+
+        # Get top 60 nodes with lowest non-zero %
+        top_60_sparse_nodes = zero_percent.sort_values(ascending=True).head(60)
+
+        plt.figure(figsize=(4, 6))
+        plt.boxplot(top_60_mean_nodes, vert=True, patch_artist=True, showfliers=False)
+        plt.title("Mean Density Distribution (Top-60)")
+        plt.ylabel("Mean Density")
+        plt.grid(axis="y")
+        plt.tight_layout()
+        plt.savefig("output/boxplot_top60_means.png", dpi=300)
+
+        plt.figure(figsize=(4, 6))
+        plt.boxplot(top_60_sparse_nodes, vert=True, patch_artist=True, showfliers=False)
+        plt.title("Density Sparcity Percent (Top-60)")
+        plt.ylabel("Sparcity Percentage")
+        plt.grid(axis="y")
+        plt.tight_layout()
+        plt.savefig("output/boxplot_top60_sparsity.png", dpi=300)
 
         self.n_times, self.n_nodes = data.shape
 

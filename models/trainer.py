@@ -99,7 +99,7 @@ def eval(
 
     rmse, mae, mape = rmse / n, mae / n, mape / n
 
-    print(f"{eval_type}, MAE: {mae}, RMSE: {rmse}")
+    print(f"{eval_type}, MAE: {mae}, RMSE: {rmse}, MAPE: {mape}")
 
     # get the average score for each metric in each batch
     return rmse, mae, mape, y_pred, y_truth, attn_matrix
@@ -168,7 +168,6 @@ def model_train(
 
     Notes:
         - Warm-up and early stopping functionality is implemented but not currently utilized.
-        - MAPE metric is omitted due to instability with small magnitudes in the dataset.
         - For best performance, ensure CUDA is properly configured for GPU-based training.
     """
 
@@ -283,13 +282,10 @@ def model_train(
         # Save evaluation results to the tensorboard writer
         writer.add_scalar(f"MAE/train", train_mae, epoch)
         writer.add_scalar(f"RMSE/train", train_rmse, epoch)
-        # NOTE Leave out the MAPE since it is not useful in the context
-        # of this dataset. There are a number of considerably small magnitude
-        # values that blow up the MAPE computation
-        # writer.add_scalar(f"MAPE/train", train_mape, epoch)
+        writer.add_scalar(f"MAPE/train", train_mape, epoch)
         writer.add_scalar(f"MAE/val", val_mae, epoch)
         writer.add_scalar(f"RMSE/val", val_rmse, epoch)
-        # writer.add_scalar(f"MAPE/val", val_mape, epoch)
+        writer.add_scalar(f"MAPE/val", val_mape, epoch)
 
         # Apply warm-up for the first epochs
         # if epoch < 5:

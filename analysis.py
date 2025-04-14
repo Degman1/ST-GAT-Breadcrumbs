@@ -109,41 +109,41 @@ np.save("output/attention.npy", attention)
 #     display_step=100,
 # )
 
-n_top_pois = 60
+# n_top_pois = 60
 
-significant_pois, sorted_scores, sorted_indices = (
-    visualizations.select_significant_pois.get_significant_pois(
-        attention, dataset.graphs[0].ndata["id"], n_top_pois, plot=True
-    )
-)
+# significant_pois, sorted_scores, sorted_indices = (
+#     visualizations.select_significant_pois.get_significant_pois(
+#         attention, dataset.graphs[0].ndata["id"], n_top_pois, plot=True
+#     )
+# )
 
-print(f"Significant POIs:\n{significant_pois}")
-print(f"Corresponding Scores:\n{sorted_scores}")
+# print(f"Significant POIs:\n{significant_pois}")
+# print(f"Corresponding Scores:\n{sorted_scores}")
 
-G = nx.read_adjlist("dataset/pruned_clustered_3hop_graph.adjlist")
-adj_mtx = nx.to_numpy_array(G)
-subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph(
-    adj_mtx, sorted_indices[:n_top_pois]
-)
-visualizations.adjacency_matrix.plot_adjacency_matrix(
-    subgraph_adj_mtx, "./output/subgraph_adj_mtx.png"
-)
+# G = nx.read_adjlist("dataset/pruned_clustered_3hop_graph.adjlist")
+# adj_mtx = nx.to_numpy_array(G)
+# subgraph_adj_mtx = visualizations.adjacency_matrix.get_subgraph(
+#     adj_mtx, sorted_indices[:n_top_pois]
+# )
+# visualizations.adjacency_matrix.plot_adjacency_matrix(
+#     subgraph_adj_mtx, "./output/subgraph_adj_mtx.png"
+# )
 
-subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph(
-    attention, sorted_indices[:n_top_pois]
-)
-visualizations.attention_matrix.plot_heatmap(subgraph_attn_mtx, epoch)
+# subgraph_attn_mtx = visualizations.adjacency_matrix.get_subgraph(
+#     attention, sorted_indices[:n_top_pois]
+# )
+# visualizations.attention_matrix.plot_heatmap(subgraph_attn_mtx, epoch)
 
-for i in range(n_top_pois):
-    rank = i
-    prediction_node_index = sorted_indices[i]
-    node_label = significant_pois[i]
-    visualizations.predictions.plot_prediction_full(
-        test_dataloader,
-        y_pred,
-        y_truth,
-        prediction_node_index,
-        node_label,
-        rank,
-        config,
-    )
+# for i in range(n_top_pois):
+#     rank = i
+#     prediction_node_index = sorted_indices[i]
+#     node_label = significant_pois[i]
+#     visualizations.predictions.plot_prediction_full(
+#         test_dataloader,
+#         y_pred,
+#         y_truth,
+#         prediction_node_index,
+#         node_label,
+#         rank,
+#         config,
+#     )
