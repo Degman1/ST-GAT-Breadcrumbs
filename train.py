@@ -37,13 +37,17 @@ torch.backends.cudnn.benchmark = False
 # Settings for data preprocessing and training
 config = {
     "BATCH_SIZE": 50,
-    "EPOCHS": 30,
+    "EPOCHS": 100,
     "WEIGHT_DECAY": 5e-5,
-    "INITIAL_LR": 5e-5,
+    "INITIAL_LR": 1e-3,
+    "FINAL_LR": 7.5e-5,
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
     "N_PRED": 9,
     "N_HIST": 24,
     "DROPOUT": 0.3,
+    "ATTENTION_HEADS": 4,
+    "LSTM1_HIDDEN_SIZE": 32,
+    "LSTM2_HIDDEN_SIZE": 128,
 }
 
 
@@ -56,9 +60,9 @@ class RunType(Enum):
 
 
 # Set true to retrain or finetune model, false to load model
-RUN_TYPE = RunType.LOAD
+RUN_TYPE = RunType.TRAIN
 # Set to name of saved model file if loading or finetuning (Applicable if RUN_TYPE = FINETUNE | LOAD_MODEL)
-checkpoint_name = "finetune_testing_pred12/stage1_55epochs.pt"
+checkpoint_name = "model_05-01-21:29:26.pt"
 # Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True; starts @ epoch 1)
 save_attention_epochs = []
 # Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True; starts @ epoch 1)
@@ -110,6 +114,9 @@ if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
         out_channels=config["N_PRED"],
         n_nodes=config["N_NODES"],
         dropout=config["DROPOUT"],
+        heads=config["ATTENTION_HEADS"],
+        lstm1_hidden_size=config["LSTM1_HIDDEN_SIZE"],
+        lstm2_hidden_size=config["LSTM2_HIDDEN_SIZE"],
     )
 
     model.load_state_dict(checkpoint["model_state_dict"])
@@ -207,7 +214,7 @@ print(f"Number of graphs in test dataset: {len(d_test)}")
 # Inference On Test Data
 
 # Run inference on the test data
-_, _, _, y_pred, y_truth, _ = models.trainer.model_test(
+_, _, _, y_pred, y_truth, _, _ = models.trainer.model_test(
     model, test_dataloader, device, config
 )
 

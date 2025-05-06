@@ -9,7 +9,7 @@ import networkx as nx
 import sys
 
 import dataloader.breadcrumbs_dataloader
-import hyperparameter_search.hyperparameter_search
+import hyperparameter_search
 import models.trainer
 
 if len(sys.argv) < 3:
@@ -24,25 +24,33 @@ print(f"Using {device}")
 print(f"Version {torch.__version__}")
 print(f"Version {dgl.__version__}")
 
-np.random.seed(0)
+# Set random seeds for reproducibility
 torch.manual_seed(0)
+np.random.seed(0)
+torch.cuda.manual_seed_all(0)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
-model_dir, runs_dir = models.trainer.setup_directories(
-    "Predicting_Breadcrumbs_Movement"
-)
-
-config = {"BATCH_SIZE": 50, "CHECKPOINT_DIR": runs_dir}
+config = {
+    "EPOCHS": 100,
+    "BATCH_SIZE": 50,
+    "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
+}
 
 param_grid = {
-    "INITIAL_LR": [0.0005, 0.00025],
-    "WEIGHT_DECAY": [5e-5],
-    "DROPOUT": [0.3],
+    "INITIAL_LR": [0.001, 0.00075, 0.0005],
+    "FINAL_LR": [7.5e-5, 5e-5, 2.5e-5],
+    "WEIGHT_DECAY": [5e-5, 1e-5, 1e-4],
+    "DROPOUT": [0.2, 0.25, 0.3],
     "N_HIST": [24],
-    "N_PRED": [12],
+    "N_PRED": [9],
+    "LSTM1_HIDDEN": [32],
+    "LSTM2_HIDDEN": [128],
+    "ATTENTION_HEADS": [4],
 }
 
 results, best_model, best_hyperparams = (
-    hyperparameter_search.hyperparameter_search.train_expanding_window_grid_search(
+    hyperparameter_search.train_expanding_window_grid_search(
         config, param_grid, device, param_index, fold_index
     )
 )

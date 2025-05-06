@@ -17,16 +17,13 @@ def get_significant_pois(
     if plot:
         plt.figure(figsize=(8, 5))
         plt.plot(
-            range(1, len(sorted_scores) + 1),
             sorted_scores,
-            marker="o",
-            label="Significance Scores",
         )
-        plt.axvline(x=top_k, color="r", linestyle="--", label=f"Top {top_k} POIs")
-        plt.xlabel("Indices of Ranked POIs")
+        plt.grid(True)
+        # plt.axvline(x=top_k, color="r", linestyle="--", label=f"Top {top_k} POIs")
+        plt.xlabel("Index of Ranked POI")
         plt.ylabel("Significance Score")
-        plt.title("Top-K Method for Selecting Significant POIs")
-        plt.legend()
+        plt.title("Ranking POIs with Attention-Based Significance Scores")
         location = "./output/poi_significance.png"
         plt.savefig(location, bbox_inches="tight")
         print(f"POI significance chart saved at {location}")

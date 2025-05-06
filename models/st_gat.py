@@ -22,16 +22,20 @@ class AveragedGATConv(torch.nn.Module):
         return h, attn
 
 
-NUM_HEADS = 8
-
-
 class ST_GAT(torch.nn.Module):
     """
     Spatio-Temporal Graph Attention Network as presented in https://ieeexplore.ieee.org/document/8903252
     """
 
     def __init__(
-        self, in_channels, out_channels, n_nodes, heads=NUM_HEADS, dropout=0.0
+        self,
+        in_channels,
+        out_channels,
+        n_nodes,
+        heads=8,
+        lstm1_hidden_size=32,
+        lstm2_hidden_size=128,
+        dropout=0.0,
     ):
         """
         Initialize the ST-GAT model
@@ -46,9 +50,6 @@ class ST_GAT(torch.nn.Module):
         self.heads = heads
         self.dropout = dropout
         self.n_nodes = n_nodes
-
-        lstm1_hidden_size = 32
-        lstm2_hidden_size = 128
 
         # single graph attentional layer with multiple attention heads using DGL's GATConv
         self.gat = AveragedGATConv(

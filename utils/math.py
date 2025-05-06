@@ -24,14 +24,14 @@ def un_z_score(x_normed, mean, std):
     return x_normed * std + mean
 
 
-def MAPE(v, v_, threshold=0.1):
+def WMAPE(v, v_, threshold=0.01):
     """
-    Filtered Mean Absolute Percentage Error.
+    Filtered Weighted Mean Absolute Percentage Error.
     Ignores values where ground truth is below a threshold.
     :param v: torch tensor, ground truth.
     :param v_: torch tensor, prediction.
     :param threshold: scalar, minimum value of ground truth to consider.
-    :return: torch scalar, MAPE (%), averaged over filtered values.
+    :return: torch scalar, WMAPE (%), averaged over filtered values.
     """
     mask = torch.abs(v) >= threshold
     if torch.sum(mask) == 0:
@@ -41,12 +41,22 @@ def MAPE(v, v_, threshold=0.1):
 
 def RMSE(v, v_):
     """
-    Mean squared error.
+    Root Mean squared error.
     :param v: torch array, ground truth.
     :param v_: torch array, prediction.
     :return: torch scalar, RMSE averages on all elements of input.
     """
     return torch.sqrt(torch.mean((v_ - v) ** 2))
+
+
+def MSE(v, v_):
+    """
+    Mean squared error.
+    :param v: torch array, ground truth.
+    :param v_: torch array, prediction.
+    :return: torch scalar, MSE averages on all elements of input.
+    """
+    return torch.mean((v_ - v) ** 2)
 
 
 def MAE(v, v_):
@@ -59,144 +69,55 @@ def MAE(v, v_):
     return torch.mean(torch.abs(v_ - v))
 
 
-# Function to compute MAPE
-def MAPE_split(v, v_):
-    # Get lengths
-    n = len(v)
-
-    # Split the vectors into 3 parts
-    split_1 = n // 3
-    split_2 = 2 * (n // 3)
-
-    v_split_1 = v[:split_1]
-    v_split_2 = v[:split_2]
-    v_split_3 = v
-
-    v_pred_split_1 = v_[:split_1]
-    v_pred_split_2 = v_[:split_2]
-    v_pred_split_3 = v_
-
-    # Compute MAPE for each split
-    mape_1 = torch.mean(
-        torch.abs((v_pred_split_1 - v_split_1)) / (v_split_1 + 1e-15) * 100
-    )
-    mape_2 = torch.mean(
-        torch.abs((v_pred_split_2 - v_split_2)) / (v_split_2 + 1e-15) * 100
-    )
-    mape_3 = torch.mean(
-        torch.abs((v_pred_split_3 - v_split_3)) / (v_split_3 + 1e-15) * 100
-    )
-
-    return mape_1, mape_2, mape_3
+import numpy as np
 
 
-# Function to compute WMAPE
-def WMAPE_split(v, v_):
-    # Get lengths
-    n = len(v)
+def evaluate_anomalies_with_prediction_tolerance(y_true, y_pred, window=1):
+    """
+    Evaluate anomaly detection performance by checking if each predicted anomaly
+    falls within ±window of any ground truth anomaly.
 
-    # Split the vectors into 3 parts
-    split_1 = n // 3
-    split_2 = 2 * (n // 3)
+    Args:
+        y_true (array-like): Ground truth binary labels (0 = normal, 1 = anomaly)
+        y_pred (array-like): Predicted binary labels (0 = normal, 1 = anomaly)
+        window (int): Number of steps on either side within which a prediction is considered correct.
 
-    v_split_1 = v[:split_1]
-    v_split_2 = v[:split_2]
-    v_split_3 = v
+    Returns:
+        dict: Precision, Recall, F1 Score
+    """
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
 
-    v_pred_split_1 = v_[:split_1]
-    v_pred_split_2 = v_[:split_2]
-    v_pred_split_3 = v_
+    gt_indices = set(np.where(y_true == 1)[0])
+    pred_indices = set(np.where(y_pred == 1)[0])
 
-    # Compute WMAPE for each split
-    wmape_1 = (
-        torch.sum(torch.abs(v_pred_split_1 - v_split_1))
-        / (torch.sum(v_split_1) + 1e-15)
-        * 100
-    )
-    wmape_2 = (
-        torch.sum(torch.abs(v_pred_split_2 - v_split_2))
-        / (torch.sum(v_split_2) + 1e-15)
-        * 100
-    )
-    wmape_3 = (
-        torch.sum(torch.abs(v_pred_split_3 - v_split_3))
-        / (torch.sum(v_split_3) + 1e-15)
-        * 100
+    matched_gt = set()
+    matched_pred = set()
+
+    for pred in pred_indices:
+        for gt in gt_indices:
+            if abs(pred - gt) <= window and gt not in matched_gt:
+                matched_pred.add(pred)
+                matched_gt.add(gt)
+                break
+
+    TP = len(matched_pred)
+    FP = len(pred_indices - matched_pred)
+    FN = len(gt_indices - matched_gt)
+
+    precision = TP / (TP + FP) if (TP + FP) > 0 else 0.0
+    recall = TP / (TP + FN) if (TP + FN) > 0 else 0.0
+    f1 = (
+        (2 * precision * recall) / (precision + recall)
+        if (precision + recall) > 0
+        else 0.0
     )
 
-    return wmape_1, wmape_2, wmape_3
-
-
-# Function to compute MAE
-def MAE_split(v, v_):
-    # Get lengths
-    n = len(v)
-
-    # Split the vectors into 3 parts
-    split_1 = n // 3
-    split_2 = 2 * (n // 3)
-
-    v_split_1 = v[:split_1]
-    v_split_2 = v[:split_2]
-    v_split_3 = v
-
-    v_pred_split_1 = v_[:split_1]
-    v_pred_split_2 = v_[:split_2]
-    v_pred_split_3 = v_
-
-    # Compute MAE for each split
-    mae_1 = torch.mean(torch.abs(v_pred_split_1 - v_split_1))
-    mae_2 = torch.mean(torch.abs(v_pred_split_2 - v_split_2))
-    mae_3 = torch.mean(torch.abs(v_pred_split_3 - v_split_3))
-
-    return mae_1, mae_2, mae_3
-
-
-# Function to compute RMSE
-def RMSE_split(v, v_):
-    # Get lengths
-    n = len(v)
-
-    # Split the vectors into 3 parts
-    split_1 = n // 3
-    split_2 = 2 * (n // 3)
-
-    v_split_1 = v[:split_1]
-    v_split_2 = v[:split_2]
-    v_split_3 = v
-
-    v_pred_split_1 = v_[:split_1]
-    v_pred_split_2 = v_[:split_2]
-    v_pred_split_3 = v_
-
-    # Compute RMSE for each split
-    rmse_1 = torch.sqrt(torch.mean((v_pred_split_1 - v_split_1) ** 2))
-    rmse_2 = torch.sqrt(torch.mean((v_pred_split_2 - v_split_2) ** 2))
-    rmse_3 = torch.sqrt(torch.mean((v_pred_split_3 - v_split_3) ** 2))
-
-    return rmse_1, rmse_2, rmse_3
-
-
-# Function to compute MSE
-def MSE_split(v, v_):
-    # Get lengths
-    n = len(v)
-
-    # Split the vectors into 3 parts
-    split_1 = n // 3
-    split_2 = 2 * (n // 3)
-
-    v_split_1 = v[:split_1]
-    v_split_2 = v[:split_2]
-    v_split_3 = v
-
-    v_pred_split_1 = v_[:split_1]
-    v_pred_split_2 = v_[:split_2]
-    v_pred_split_3 = v_
-
-    # Compute MSE for each split
-    mse_1 = torch.mean((v_pred_split_1 - v_split_1) ** 2)
-    mse_2 = torch.mean((v_pred_split_2 - v_split_2) ** 2)
-    mse_3 = torch.mean((v_pred_split_3 - v_split_3) ** 2)
-
-    return mse_1, mse_2, mse_3
+    return {
+        "True Positives": TP,
+        "False Positives": FP,
+        "False Negatives": FN,
+        "Precision": precision,
+        "Recall": recall,
+        "F1 Score": f1,
+    }

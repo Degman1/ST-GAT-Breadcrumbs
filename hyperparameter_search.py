@@ -9,6 +9,7 @@ from dgl.dataloading import GraphDataLoader
 import gc
 import json
 from datetime import datetime
+from torch.utils.tensorboard import SummaryWriter
 
 from models.st_gat import ST_GAT
 from utils.math import *
@@ -16,6 +17,10 @@ import dataloader.breadcrumbs_dataloader
 import models.trainer
 import models.early_stopping
 import math
+
+# Make a tensorboard writer
+global writer
+writer = SummaryWriter()
 
 
 def load_previous_results():
@@ -36,9 +41,9 @@ def train_expanding_window_grid_search(
     Train ST-GAT using an expanding window cross-validation approach with hyperparameter grid search.
 
     Expanding window schedule:
-        Iteration 1: 80% of training data, 100% of validation data
-        Iteration 2: 90% of training data, 100% of validation data
-        Iteration 3: 100% of training data, 100% of validation data
+        Iteration 1: 80% of training data, 10% of validation data
+        Iteration 2: 90% of training data, 10% of validation data
+        Iteration 3: 100% of training data, 10% of validation data
 
     :param config: Dictionary containing training configurations.
     :param param_grid: Dictionary containing hyperparameters.
@@ -46,7 +51,7 @@ def train_expanding_window_grid_search(
     :return: Dictionary with results of each fold, best model state.
     """
 
-    train_ratios = [0.8, 0.9, 1.0]  # Expanding train sizes
+    train_ratios = [0.5, 0.6, 0.7]  # Expanding train sizes
     val_ratio = 0.1  # Fixed validation size
     best_model = None
     best_hyperparams = None
@@ -92,8 +97,8 @@ def train_expanding_window_grid_search(
         # weighted_average_mae = 0
 
         for fold, train_ratio in enumerate(train_ratios):
-            train_size = int(train_ratio * len(d_train))
-            val_size = len(d_val)
+            train_size = int(train_ratio * num_graphs)
+            val_size = int(val_ratio * num_graphs)
 
             if train_size + val_size > num_graphs:
                 print(
@@ -101,12 +106,8 @@ def train_expanding_window_grid_search(
                 )
                 break  # Prevent out-of-bounds errors
 
-            train_subset = d_train[
-                :train_size
-            ]  # [dataset[i] for i in range(train_size)]
-            val_subset = (
-                d_val  # [dataset[i] for i in range(train_size, train_size + val_size)]
-            )
+            train_subset = dataset[:train_size]
+            val_subset = dataset[train_size : train_size + val_size]
 
             train_dataloader = dgl.dataloading.GraphDataLoader(
                 train_subset, batch_size=config["BATCH_SIZE"], shuffle=False
@@ -116,7 +117,7 @@ def train_expanding_window_grid_search(
             )
 
             print(
-                f"Fold {fold}: Train [{len(train_subset)} ({train_ratio})] - Val [{len(val_subset)} ({val_ratio})]"
+                f"Fold {fold}: Train [{len(train_subset)} ({train_ratio})] - Val [{len(val_subset)} (1.0)]"
             )
 
             # Initialize model with current hyperparameters
@@ -125,6 +126,9 @@ def train_expanding_window_grid_search(
                 out_channels=current_params["N_PRED"],
                 n_nodes=config["N_NODES"],
                 dropout=current_params["DROPOUT"],
+                heads=current_params["ATTENTION_HEADS"],
+                lstm1_hidden_size=current_params["LSTM1_HIDDEN"],
+                lstm2_hidden_size=current_params["LSTM2_HIDDEN"],
             ).to(device)
 
             optimizer = optim.Adam(
@@ -132,80 +136,79 @@ def train_expanding_window_grid_search(
                 lr=current_params["INITIAL_LR"],
                 weight_decay=current_params["WEIGHT_DECAY"],
             )
-            loss_fn = torch.nn.MSELoss
-
-            # 0.0025, 0.005, 0.0075
-            # if (current_params["INITIAL_LR"] == 1e-4):
-            #     epochs = 100
-            # elif (current_params["INITIAL_LR"] == 5e-4):
-            #     epochs = 80
-            # elif (current_params["INITIAL_LR"] == 1e-3):
-            #     epochs = 70
-            # elif current_params["INITIAL_LR"] == 0.0025:
-            #     epochs = 60
-            # elif current_params["INITIAL_LR"] == 0.005:
-            #     epochs = 55
-            # elif current_params["INITIAL_LR"] == 0.0075:
-            #     epochs = 50
-            # elif current_params["INITIAL_LR"] == 0.01:
-            #     epochs = 40
-            # else:
-            #     print("ERROR: Epoch cannot be computed.")
-            #     raise
+            loss_fn = torch.nn.MSELoss()
 
             val_mae = None
 
+            epochs = config["EPOCHS"]
+            stopped = config["EPOCHS"]
+
             es = models.early_stopping.EarlyStopping(patience=10, min_delta=0.0001)
-            epochs = 120
-            stopped = 120
-            min_val_mae = math.inf
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+                optimizer,
+                T_max=config["EPOCHS"],  # Total epochs (full cosine cycle)
+                eta_min=current_params["FINAL_LR"],  # Minimum learning rate at the end
+            )
+
+            val_rmse, val_mae, val_wmape, val_mse = None, None, None, None
+            train_rmse, train_mae, train_wmape, train_mse = None, None, None, None
             for epoch in range(epochs):
                 train_loss = models.trainer.train(
-                    model, device, train_dataloader, optimizer, loss_fn, epoch
+                    model, device, train_dataloader, optimizer, loss_fn, epoch, writer
                 )
 
                 # if epoch % 5 == 0 or epoch == epochs - 1:
                 with torch.no_grad():
-                    train_rmse, train_mae, train_mape, _, _, attention_matrix = (
-                        models.trainer.eval(
-                            model, device, train_dataloader, config, "Train"
-                        )
+                    (
+                        train_rmse,
+                        train_mae,
+                        train_wmape,
+                        _,
+                        _,
+                        attention_matrix,
+                        train_mse,
+                    ) = models.trainer.eval(
+                        model, device, train_dataloader, config, "Train"
                     )
-                    val_rmse, val_mae, val_mape, _, _, _ = models.trainer.eval(
-                        model, device, val_dataloader, config, "Valid"
+                    val_rmse, val_mae, val_wmape, _, _, _, val_mse = (
+                        models.trainer.eval(
+                            model, device, val_dataloader, config, "Valid"
+                        )
                     )
                     val_mae = val_mae.item()
 
-                models.trainer.writer.add_scalar(f"MAE/train", train_mae, epoch)
-                models.trainer.writer.add_scalar(f"RMSE/train", train_rmse, epoch)
-                models.trainer.writer.add_scalar(f"MAPE/train", train_mape, epoch)
-                models.trainer.writer.add_scalar(f"wMAE/val", val_mae, epoch)
-                models.trainer.writer.add_scalar(f"RMSE/val", val_rmse, epoch)
-                models.trainer.writer.add_scalar(f"MAPE/val", val_mape, epoch)
+                writer.add_scalar(f"Loss/train", train_mse, epoch)
+                writer.add_scalar(f"MAE/train", train_mae, epoch)
+                writer.add_scalar(f"RMSE/train", train_rmse, epoch)
+                writer.add_scalar(f"WMAPE/train", train_wmape, epoch)
+                writer.add_scalar(f"Loss/val", val_mse, epoch)
+                writer.add_scalar(f"MAE/val", val_mae, epoch)
+                writer.add_scalar(f"RMSE/val", val_rmse, epoch)
+                writer.add_scalar(f"WMAPE/val", val_wmape, epoch)
 
-                if val_mae < min_val_mae:
-                    min_val_mae = val_mae
                 # Check early stopping
                 if es(val_mae):
                     stopped = epoch
                     print(f"Early stopping at epoch {epoch + 1}")
                     break
 
+                scheduler.step()
+
             # Store results for this fold + hyperparameter set
             print(
-                f"Achieved validation MAE of {min_val_mae} over {stopped} epochs for fold {fold}"
+                f"Achieved validation MAE of {val_mae} over {stopped} epochs for fold {fold}"
             )
 
-            models.trainer.writer.flush()
+            # writer.flush()
 
-            # Clear GPU memory
-            model.to("cpu")
-            del model
-            del optimizer
-            del train_dataloader
-            del val_dataloader
-            gc.collect()
-            torch.cuda.empty_cache()
+            # # Clear GPU memory
+            # model.to("cpu")
+            # del model
+            # del optimizer
+            # del train_dataloader
+            # del val_dataloader
+            # gc.collect()
+            # torch.cuda.empty_cache()
 
             # Add to weighted validation across folds
             # weighted_average_mae += train_ratio * val_mae
@@ -216,7 +219,15 @@ def train_expanding_window_grid_search(
                 new_data = {
                     "params": current_params,
                     "train_percent": train_ratio,
-                    "mae": min_val_mae,
+                    "Loss/train": float(train_mse),
+                    "MAE/train": float(train_mae),
+                    "RMSE/train": float(train_rmse),
+                    "WMAPE/train": float(train_wmape),
+                    "Loss/val": float(val_mse),
+                    "MAE/val": float(val_mae),
+                    "RMSE/val": float(val_rmse),
+                    "WMAPE/val": float(val_wmape),
+                    "epochs": stopped,
                     "completion_time": f"{datetime.now()}",
                 }
                 data["Results"].append(new_data)

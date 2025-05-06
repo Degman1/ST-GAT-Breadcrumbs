@@ -79,6 +79,7 @@ model = models.st_gat.ST_GAT(
     out_channels=config["N_PRED"],
     n_nodes=config["N_NODES"],
     dropout=config["DROPOUT"],
+    heads=config["ATTENTION_HEADS"],
 )
 
 model.load_state_dict(checkpoint["model_state_dict"])
@@ -109,13 +110,15 @@ np.save("output/attention.npy", attention)
 #     display_step=100,
 # )
 
-# n_top_pois = 60
+n_top_pois = 60
 
-# significant_pois, sorted_scores, sorted_indices = (
-#     visualizations.select_significant_pois.get_significant_pois(
-#         attention, dataset.graphs[0].ndata["id"], n_top_pois, plot=True
-#     )
-# )
+significant_pois, sorted_scores, sorted_indices = (
+    visualizations.select_significant_pois.get_significant_pois(
+        attention, dataset.graphs[0].ndata["id"], n_top_pois, plot=True
+    )
+)
+
+print(y_truth.shape)
 
 # print(f"Significant POIs:\n{significant_pois}")
 # print(f"Corresponding Scores:\n{sorted_scores}")

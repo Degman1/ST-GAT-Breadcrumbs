@@ -13,6 +13,18 @@ import models.early_stopping
 from visualizations.attention_matrix import *
 
 
+def evaluate_precomputed_predictions(y_truth, y_pred):
+    rmse = 0.0
+    wmape = 0.0
+    mae = 0.0
+    batches = y_truth.shape[0]
+    for i in range(batches):
+        rmse += RMSE(y_truth[i], y_pred[i])
+        wmape += WMAPE(y_truth[i], y_pred[i])
+        mae += MAE(y_truth[i], y_pred[i])
+    return mae / batches, rmse / batches, wmape / batches
+
+
 @torch.no_grad()
 def eval(
     model,
@@ -41,7 +53,7 @@ def eval(
         tuple:
             - rmse (float): Average Root Mean Square Error across all batches.
             - mae (float): Average Mean Absolute Error across all batches.
-            - mape (float): Average Mean Absolute Percentage Error across all batches.
+            - wmape (float): Average Mean Absolute Percentage Error across all batches.
             - y_pred (torch.Tensor): Collected predictions across all batches.
             - y_truth (torch.Tensor): Collected ground truths across all batches.
             - attn_matrix (np.ndarray or None): Saved attention matrix (if applicable), otherwise None.
@@ -50,10 +62,14 @@ def eval(
     model.eval()
     model.to(device)
 
+    mse = 0
     mae = 0
     rmse = 0
-    mape = 0
+    wmape = 0
     n = 0
+
+    y_pred = None
+    y_truth = None
 
     attn_matrix = None
 
@@ -80,9 +96,10 @@ def eval(
         y_pred[i, : pred.shape[0], :] = pred
         y_truth[i, : pred.shape[0], :] = truth
 
+        mse += MSE(truth, pred)
         rmse += RMSE(truth, pred)
         mae += MAE(truth, pred)
-        mape += MAPE(truth, pred)
+        wmape += WMAPE(truth, pred)
         n += 1
 
         # Save the GAT attention matrix if the current epoch attention is requested
@@ -97,15 +114,15 @@ def eval(
                 attn_avg = np.mean(attn_npy, axis=1)
                 attn_matrix = convert_attention_batch(graph, config, attn_avg)
 
-    rmse, mae, mape = rmse / n, mae / n, mape / n
+    rmse, mae, wmape, mse = rmse / n, mae / n, wmape / n, mse / n
 
-    print(f"{eval_type}, MAE: {mae}, RMSE: {rmse}, MAPE: {mape}")
+    print(f"{eval_type}, MAE: {mae}, RMSE: {rmse}, WMAPE: {wmape}")
 
     # get the average score for each metric in each batch
-    return rmse, mae, mape, y_pred, y_truth, attn_matrix
+    return rmse, mae, wmape, y_pred, y_truth, attn_matrix, mse
 
 
-def train(model, device, dataloader, optimizer, loss_fn, epoch):
+def train(model, device, dataloader, optimizer, loss_fn, epoch, w=None):
     """
     Trains the model for one epoch on the provided data.
 
@@ -128,7 +145,6 @@ def train(model, device, dataloader, optimizer, loss_fn, epoch):
         pred, attn = model(batch, device)
         y_pred = torch.squeeze(pred)
         loss = loss_fn(y_pred.float(), torch.squeeze(batch.ndata["label"]).float())
-        writer.add_scalar("Loss/train", loss, epoch)
         loss.backward()
         optimizer.step()
 
@@ -183,6 +199,9 @@ def model_train(
             out_channels=config["N_PRED"],
             n_nodes=config["N_NODES"],
             dropout=config["DROPOUT"],
+            heads=config["ATTENTION_HEADS"],
+            lstm1_hidden_size=config["LSTM1_HIDDEN_SIZE"],
+            lstm2_hidden_size=config["LSTM2_HIDDEN_SIZE"],
         )
 
     # Check which parameters are trainable
@@ -241,8 +260,8 @@ def model_train(
     if lr_scheduler:
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
             optimizer,
-            T_max=80,  # Total epochs (full cosine cycle)
-            eta_min=1e-6,  # Minimum learning rate at the end
+            T_max=config["EPOCHS"],  # Total epochs (full cosine cycle)
+            eta_min=config["FINAL_LR"],  # Minimum learning rate at the end
         )
 
     pretrained_epochs = (
@@ -256,7 +275,7 @@ def model_train(
         print(f"Loss: {loss:.3f}")
 
         # Compute evaluation metrics on the training data
-        train_rmse, train_mae, train_mape, _, _, attention_matrix = eval(
+        train_rmse, train_mae, train_wmape, _, _, attention_matrix, train_mse = eval(
             model,
             device,
             train_dataloader,
@@ -268,7 +287,7 @@ def model_train(
         )
 
         # Compute evaluation metrics on the validation data
-        val_rmse, val_mae, val_mape, _, _, _ = eval(
+        val_rmse, val_mae, val_wmape, _, _, _, val_mse = eval(
             model, device, val_dataloader, config, "Valid", graph
         )
 
@@ -280,12 +299,14 @@ def model_train(
         torch.cuda.empty_cache()
 
         # Save evaluation results to the tensorboard writer
+        writer.add_scalar(f"Loss/train", train_mse, epoch)
         writer.add_scalar(f"MAE/train", train_mae, epoch)
         writer.add_scalar(f"RMSE/train", train_rmse, epoch)
-        writer.add_scalar(f"MAPE/train", train_mape, epoch)
+        writer.add_scalar(f"WMAPE/train", train_wmape, epoch)
+        writer.add_scalar(f"Loss/val", val_mse, epoch)
         writer.add_scalar(f"MAE/val", val_mae, epoch)
         writer.add_scalar(f"RMSE/val", val_rmse, epoch)
-        writer.add_scalar(f"MAPE/val", val_mape, epoch)
+        writer.add_scalar(f"WMAPE/val", val_wmape, epoch)
 
         # Apply warm-up for the first epochs
         # if epoch < 5:
@@ -321,12 +342,16 @@ def model_train(
                     "optimizer_type": optimizer.__class__.__name__,
                     "optimizer_state_dict": optimizer.state_dict(),
                     "scheduler_type": scheduler.__class__.__name__,
-                    "scheduler_state_dict": scheduler.state_dict(),
+                    "scheduler_state_dict": (
+                        scheduler.state_dict() if scheduler is not None else None
+                    ),
                     "loss": loss,
                     "train_rmse": train_rmse,
                     "train_mae": train_mae,
+                    "train_wmape": train_wmape,
                     "val_rmse": val_rmse,
                     "val_mae": val_mae,
+                    "val_wmape": val_wmape,
                     "attention_by_epoch": attn_matrices_by_epoch,
                 },
                 os.path.join(config["CHECKPOINT_DIR"], f"model_{timestr}.pt"),
@@ -351,7 +376,7 @@ def model_test(model, test_dataloader, device, config):
         tuple: Returns the output from the `eval` function, which includes:
             - rmse (float): Average Root Mean Square Error on the test dataset.
             - mae (float): Average Mean Absolute Error on the test dataset.
-            - mape (float): Average Mean Absolute Percentage Error on the test dataset.
+            - wmape (float): Average Mean Absolute Percentage Error on the test dataset.
             - y_pred (torch.Tensor): Collected predictions across all test batches.
             - y_truth (torch.Tensor): Collected ground truth labels across all test batches.
             - attn_matrix (np.ndarray or None): Attention matrix if applicable, otherwise None.

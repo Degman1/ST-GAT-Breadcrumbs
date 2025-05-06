@@ -171,3 +171,7 @@ def plot_heatmap(
     name = f"./output/attention_heatmap_epoch{epoch_number}.png"
     plt.savefig(name, bbox_inches="tight")
     print(f"Attention heat map saved to {name}")
+
+
+if __name__ == "__main__":
+    pass
