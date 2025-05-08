@@ -97,8 +97,8 @@ def train_expanding_window_grid_search(
         # weighted_average_mae = 0
 
         for fold, train_ratio in enumerate(train_ratios):
-            train_size = int(train_ratio * num_graphs)
-            val_size = int(val_ratio * num_graphs)
+            train_size = int(0.4 * num_graphs)
+            val_size = int(train_ratio * num_graphs)
 
             if train_size + val_size > num_graphs:
                 print(

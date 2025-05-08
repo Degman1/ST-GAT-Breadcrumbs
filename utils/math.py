@@ -24,7 +24,7 @@ def un_z_score(x_normed, mean, std):
     return x_normed * std + mean
 
 
-def WMAPE(v, v_, threshold=0.01):
+def WMAPE(v, v_, threshold=0.001):
     """
     Filtered Weighted Mean Absolute Percentage Error.
     Ignores values where ground truth is below a threshold.

@@ -7,6 +7,7 @@ import os
 import pandas as pd
 import networkx as nx
 import sys
+import random
 
 import dataloader.breadcrumbs_dataloader
 import hyperparameter_search
@@ -27,6 +28,7 @@ print(f"Version {dgl.__version__}")
 # Set random seeds for reproducibility
 torch.manual_seed(0)
 np.random.seed(0)
+random.seed(0)
 torch.cuda.manual_seed_all(0)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
@@ -38,10 +40,10 @@ config = {
 }
 
 param_grid = {
-    "INITIAL_LR": [0.001, 0.00075, 0.0005],
-    "FINAL_LR": [7.5e-5, 5e-5, 2.5e-5],
-    "WEIGHT_DECAY": [5e-5, 1e-5, 1e-4],
-    "DROPOUT": [0.2, 0.25, 0.3],
+    "INITIAL_LR": [0.001],
+    "FINAL_LR": [7.5e-5],
+    "WEIGHT_DECAY": [1e-5],
+    "DROPOUT": [0.25],
     "N_HIST": [24],
     "N_PRED": [9],
     "LSTM1_HIDDEN": [32],

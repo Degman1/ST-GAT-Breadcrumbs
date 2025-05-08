@@ -59,7 +59,7 @@ def main():
     color_cycle = itertools.cycle(plt.cm.tab10.colors)
 
     for metric in METRICS:
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(8, 6))
         for event_file in filtered_event_files:
             run_name = os.path.basename(os.path.dirname(event_file))
             print(f"Processing: {run_name}")
@@ -87,15 +87,13 @@ def main():
             plt.plot(
                 steps,
                 smoothed_vals,
-                label=f"{run_name} (smoothed)",
                 color=color,
                 linewidth=2,
             )
 
-        plt.title(f"Impact of LSTM Hidden Sizes on Training Loss")
-        plt.xlabel("Epoch")
-        plt.ylabel(metric)
-        plt.legend()
+        plt.xlabel("Epoch", fontsize=20)
+        plt.ylabel("Validation Loss (MSE)", fontsize=20)
+        plt.legend(fontsize=18)
         plt.grid(True)
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         filename = os.path.join(OUTPUT_DIR, f"all_runs_{metric.replace('/', '_')}.png")

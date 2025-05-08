@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p gpu-preempt,gpu  # Partition
 #SBATCH -G 1  # Number of GPUs
-#SBATCH -t 12:00:00  # Job time limit
+#SBATCH -t 2:00:00  # Job time limit
 #SBATCH --constraint=vram40
 #SBATCH -o out/slurm-%j.out  # %j = job ID
 #SBATCH --mail-type=END
@@ -28,8 +28,8 @@ else
     j=0
 fi
 
-for (( ; i<36; i++)); do
-    for (( ; j<3; j++)); do
+for (( ; i<1; i++)); do
+    for (( ; j<11; j++)); do
         echo "Running with parameter combination index $i and fold $j"
         python run_hyperparameter_search.py $i $j
 

@@ -38,13 +38,13 @@ torch.backends.cudnn.benchmark = False
 config = {
     "BATCH_SIZE": 50,
     "EPOCHS": 100,
-    "WEIGHT_DECAY": 5e-5,
+    "WEIGHT_DECAY": 1e-5,
     "INITIAL_LR": 1e-3,
     "FINAL_LR": 7.5e-5,
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
     "N_PRED": 9,
     "N_HIST": 24,
-    "DROPOUT": 0.3,
+    "DROPOUT": 0.25,
     "ATTENTION_HEADS": 4,
     "LSTM1_HIDDEN_SIZE": 32,
     "LSTM2_HIDDEN_SIZE": 128,
@@ -62,7 +62,7 @@ class RunType(Enum):
 # Set true to retrain or finetune model, false to load model
 RUN_TYPE = RunType.TRAIN
 # Set to name of saved model file if loading or finetuning (Applicable if RUN_TYPE = FINETUNE | LOAD_MODEL)
-checkpoint_name = "model_05-01-21:29:26.pt"
+checkpoint_name = "FINAL_MODEL.pt"
 # Add epochs after which to save the GAT's attention matrix (Applicable if RETRAIN=True; starts @ epoch 1)
 save_attention_epochs = []
 # Add epochs after which to save a checkpoint file (Applicable if RETRAIN=True; starts @ epoch 1)
@@ -83,6 +83,16 @@ print("Completed Data Preprocessing.")
 test_dataloader = GraphDataLoader(
     d_test, batch_size=config["BATCH_SIZE"], shuffle=False
 )
+
+# NOTE This commented part was used for concept drift analysis
+# train_ratio = 0.7
+# val_ratio = 0.1
+# d_train = dataset[: int(train_ratio * len(dataset))]
+# d_val = dataset[
+#     int(train_ratio * len(dataset)) : int(train_ratio * len(dataset))
+#     + int(val_ratio * len(dataset))
+# ]
+
 
 # Dynamically define the number of nodes and edges in the processed graph
 config["N_NODES"] = dataset.graphs[0].number_of_nodes()
@@ -130,6 +140,29 @@ if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
     print(f"\tValidation MAE: {checkpoint['val_mae']}")
     print(f"\tValidation RMSE: {checkpoint['val_rmse']}")
 
+    # NOTE This commented part was used for concept drift analysis
+    # print("--")
+    # _, _, _, y_pred, y_truth, _, _ = models.trainer.model_test(
+    #     model,
+    #     GraphDataLoader(d_train, batch_size=config["BATCH_SIZE"], shuffle=False),
+    #     device,
+    #     config,
+    # )
+    # print("--")
+    # for i in [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]:
+    #     d_val = dataset[
+    #         int(train_ratio * len(dataset))
+    #         + int(i * len(dataset)) : int(train_ratio * len(dataset))
+    #         + int((i + 0.1) * len(dataset))
+    #     ]
+    #     _, _, _, y_pred, y_truth, _, _ = models.trainer.model_test(
+    #         model,
+    #         GraphDataLoader(d_val, batch_size=config["BATCH_SIZE"], shuffle=False),
+    #         device,
+    #         config,
+    #     )
+    # print("--")
+
     if RUN_TYPE == RunType.FINETUNE:
         # Now finetune the model that was loaded.
         for name, layer in model.named_children():
@@ -138,10 +171,10 @@ if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
                     param.requires_grad = False
 
         train_dataloader = GraphDataLoader(
-            d_train, batch_size=config["BATCH_SIZE"], shuffle=True
+            d_train, batch_size=config["BATCH_SIZE"], shuffle=False
         )
         val_dataloader = GraphDataLoader(
-            d_val, batch_size=config["BATCH_SIZE"], shuffle=True
+            d_val, batch_size=config["BATCH_SIZE"], shuffle=False
         )
 
         config["PRETRAINED_EPOCHS"] = checkpoint["epoch"]
@@ -176,10 +209,10 @@ if RUN_TYPE == RunType.LOAD or RUN_TYPE == RunType.FINETUNE:
         )
 elif RUN_TYPE == RunType.TRAIN:
     train_dataloader = GraphDataLoader(
-        d_train, batch_size=config["BATCH_SIZE"], shuffle=True
+        d_train, batch_size=config["BATCH_SIZE"], shuffle=False
     )
     val_dataloader = GraphDataLoader(
-        d_val, batch_size=config["BATCH_SIZE"], shuffle=True
+        d_val, batch_size=config["BATCH_SIZE"], shuffle=False
     )
 
     print(f"Number of graphs in training dataset: {len(d_train)}")
