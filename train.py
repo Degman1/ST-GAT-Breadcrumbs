@@ -38,7 +38,7 @@ torch.backends.cudnn.benchmark = False
 config = {
     "BATCH_SIZE": 50,
     "EPOCHS": 80,
-    "WEIGHT_DECAY": 1e-5,
+    "WEIGHT_DECAY": 2.5e-5,
     "INITIAL_LR": 1e-3,
     "FINAL_LR": 7.5e-5,
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
