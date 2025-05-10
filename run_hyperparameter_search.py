@@ -34,16 +34,16 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 config = {
-    "EPOCHS": 100,
+    "EPOCHS": 80,
     "BATCH_SIZE": 50,
     "CHECKPOINT_DIR": "./trained_models/Predicting_Breadcrumbs_Movement",
 }
 
 param_grid = {
-    "INITIAL_LR": [0.001, 7.5e-5, 5e-5, 2.5e-5],
+    "INITIAL_LR": [0.001, 7.5e-4, 5e-4],
     "FINAL_LR": [7.5e-5, 5e-5, 2.5e-5, 1e-5],
     "WEIGHT_DECAY": [1e-5, 2.5e-5, 5e-5],
-    "DROPOUT": [0.2, 0.25, 0.3],
+    "DROPOUT": [0.25],
     "N_HIST": [24],
     "N_PRED": [9],
     "LSTM1_HIDDEN": [32],

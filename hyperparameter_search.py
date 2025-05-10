@@ -143,7 +143,7 @@ def train_expanding_window_grid_search(
             epochs = config["EPOCHS"]
             stopped = config["EPOCHS"]
 
-            es = models.early_stopping.EarlyStopping(patience=10, min_delta=0.0001)
+            # es = models.early_stopping.EarlyStopping(patience=10, min_delta=0.0001)
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
                 optimizer,
                 T_max=config["EPOCHS"],  # Total epochs (full cosine cycle)
@@ -187,10 +187,10 @@ def train_expanding_window_grid_search(
                 writer.add_scalar(f"WMAPE/val", val_wmape, epoch)
 
                 # Check early stopping
-                if es(val_mae):
-                    stopped = epoch
-                    print(f"Early stopping at epoch {epoch + 1}")
-                    break
+                # if es(val_mae):
+                #     stopped = epoch
+                #     print(f"Early stopping at epoch {epoch + 1}")
+                #     break
 
                 scheduler.step()
 

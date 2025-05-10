@@ -36,7 +36,7 @@ def WMAPE(v, v_, threshold=0.01):
     mask = torch.abs(v) >= threshold
     if torch.sum(mask) == 0:
         return torch.tensor(float("nan"))  # or 0, or raise an exception
-    return torch.sum(torch.abs(v_ - v)[mask]) / torch.sum(torch.abs(v)[mask]) * 100
+    return torch.sum(torch.abs(v_ - v)[mask]) / torch.mean(torch.abs(v)[mask]) * 100
 
 
 def WindowedWMAPE(

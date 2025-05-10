@@ -28,7 +28,7 @@ else
     j=0
 fi
 
-for (( ; i<144; i++)); do
+for (( ; i<36; i++)); do
     for (( ; j<3; j++)); do
         echo "Running with parameter combination index $i and fold $j"
         python run_hyperparameter_search.py $i $j

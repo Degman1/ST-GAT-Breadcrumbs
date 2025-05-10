@@ -94,4 +94,4 @@ def find_best_hyperparams(file_path, top_5=0, filter_param=None, filter_value=No
 
 if __name__ == "__main__":
     file_path = "results.json"  # Change this to your actual file
-    find_best_hyperparams(file_path, top_5=0)
+    find_best_hyperparams(file_path, top_5=1)
