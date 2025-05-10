@@ -40,10 +40,10 @@ config = {
 }
 
 param_grid = {
-    "INITIAL_LR": [0.001],
-    "FINAL_LR": [7.5e-5],
-    "WEIGHT_DECAY": [1e-5],
-    "DROPOUT": [0.25],
+    "INITIAL_LR": [0.001, 7.5e-5, 5e-5, 2.5e-5],
+    "FINAL_LR": [7.5e-5, 5e-5, 2.5e-5, 1e-5],
+    "WEIGHT_DECAY": [1e-5, 2.5e-5, 5e-5],
+    "DROPOUT": [0.2, 0.25, 0.3],
     "N_HIST": [24],
     "N_PRED": [9],
     "LSTM1_HIDDEN": [32],

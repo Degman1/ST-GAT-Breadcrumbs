@@ -97,10 +97,10 @@ def train_expanding_window_grid_search(
         # weighted_average_mae = 0
 
         for fold, train_ratio in enumerate(train_ratios):
-            train_size = int(0.4 * num_graphs)
-            val_size = int(train_ratio * num_graphs)
+            train_size = int(train_ratio * num_graphs)
+            val_size = int(val_ratio * num_graphs)
 
-            if train_size + val_size > num_graphs:
+            if train_size + val_size > int(num_graphs * 0.8):
                 print(
                     "ERROR: Train or validation ratios combine to be more data than is present in the dataset"
                 )
@@ -110,10 +110,10 @@ def train_expanding_window_grid_search(
             val_subset = dataset[train_size : train_size + val_size]
 
             train_dataloader = dgl.dataloading.GraphDataLoader(
-                train_subset, batch_size=config["BATCH_SIZE"], shuffle=False
+                train_subset, batch_size=config["BATCH_SIZE"], shuffle=True
             )
             val_dataloader = dgl.dataloading.GraphDataLoader(
-                val_subset, batch_size=config["BATCH_SIZE"], shuffle=False
+                val_subset, batch_size=config["BATCH_SIZE"], shuffle=True
             )
 
             print(

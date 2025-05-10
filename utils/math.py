@@ -24,7 +24,7 @@ def un_z_score(x_normed, mean, std):
     return x_normed * std + mean
 
 
-def WMAPE(v, v_, threshold=0.001):
+def WMAPE(v, v_, threshold=0.01):
     """
     Filtered Weighted Mean Absolute Percentage Error.
     Ignores values where ground truth is below a threshold.
@@ -37,6 +37,41 @@ def WMAPE(v, v_, threshold=0.001):
     if torch.sum(mask) == 0:
         return torch.tensor(float("nan"))  # or 0, or raise an exception
     return torch.sum(torch.abs(v_ - v)[mask]) / torch.sum(torch.abs(v)[mask]) * 100
+
+
+def WindowedWMAPE(
+    v, v_, ground_truth_unfolded, start_idx, window_radius=1, threshold=0.01
+):
+    errors = []
+    weights = []
+    T = ground_truth.shape[0]
+
+    for t in range(len(v)):  # For each of the 9 forecast steps
+        pred_val = v_[t]
+        min_error = float("inf")
+        best_weight = None
+
+        # Define window bounds (stay within ground_truth bounds)
+        window_start = max(0, start_idx + t - window_radius)
+        window_end = min(T, start_idx + t + window_radius + 1)
+
+        for i in range(window_start, window_end):
+            gt_val = ground_truth[i]
+            if torch.abs(gt_val) < threshold:
+                continue
+            abs_error = torch.abs(pred_val - gt_val)
+            if abs_error < min_error:
+                min_error = abs_error
+                best_weight = torch.abs(gt_val)
+
+        if best_weight is not None:
+            errors.append(min_error)
+            weights.append(best_weight)
+
+    if len(weights) == 0:
+        return torch.tensor(float("nan"))
+
+    return torch.sum(torch.stack(errors)) / torch.sum(torch.stack(weights)) * 100
 
 
 def RMSE(v, v_):

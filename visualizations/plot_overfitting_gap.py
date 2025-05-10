@@ -1,5 +1,6 @@
 import json
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Load the JSON file
 with open("../results.json", "r") as f:
@@ -35,10 +36,10 @@ for x, y_train, y_val in zip(train_percents, train_loss, val_loss):
 plt.xticks(ticks=range(int(min(train_percents)) + 1, int(max(train_percents) + 1), 5))
 
 plt.xlabel("Training Dataset Size (Days)", fontsize=12)
-plt.ylabel("MAE", fontsize=12)
+plt.ylabel("Valid. MAE - Train MAE", fontsize=12)
 plt.legend(fontsize=12)
 plt.grid(True)
-filename = f"concept_drift_past.png"
+filename = f"concept_drift_future2.png"
 plt.tight_layout()
 plt.savefig(filename, bbox_inches="tight")
 print(f"Figure saved to {filename}")

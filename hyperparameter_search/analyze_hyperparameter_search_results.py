@@ -59,7 +59,7 @@ def find_best_hyperparams(file_path, top_5=0, filter_param=None, filter_value=No
 
     weighted_mae = compute_weighted_mae(results)
     sorted_params = sorted(
-        weighted_mae.items(), key=lambda x: x[1]["weighted_average_mae"]
+        weighted_mae.items(), key=lambda x: x[1]["mae@70%"]
     )  # Sort by lowest MAE first
 
     if top_5 == 0:
@@ -94,4 +94,4 @@ def find_best_hyperparams(file_path, top_5=0, filter_param=None, filter_value=No
 
 if __name__ == "__main__":
     file_path = "results.json"  # Change this to your actual file
-    find_best_hyperparams(file_path, top_5=1)
+    find_best_hyperparams(file_path, top_5=0)
